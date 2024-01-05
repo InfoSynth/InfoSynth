@@ -16,12 +16,16 @@ class Authentication {
     // });
 
     // Check if the provided email and password match any valid credentials
+    if (validCredentials.isEmpty) {
+      return false;
+    }
+
     return validCredentials.any((credential) =>
         credential['email'] == email && credential['password'] == password);
   }
 
   Future<void> getUserData() async {
-    Network network = Network('http://localhost:8000/get');
+    Network network = Network();
 
     var jsonData = await network.getJsonData();
 
