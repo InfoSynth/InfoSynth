@@ -29,7 +29,6 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-madcamp2/build/
 
 # Symbolication related
 app.*.symbols
@@ -45,3 +44,4 @@ app.*.map.json
 private.js
 
 madcamp2/build/
+madcamp2/ios/

@@ -21,7 +21,7 @@ class Authentication {
   }
 
   Future<void> getUserData() async {
-    Network network = Network('http://localhost:8000/get');
+    Network network = Network();
 
     var jsonData = await network.getJsonData();
 
