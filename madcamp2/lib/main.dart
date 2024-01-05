@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:madcamp2/server/server.dart';
 
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 import 'services/shared_service.dart';
 
-// Widget _defaultHome = const LoginPage();
-Widget _defaultHome = MyView();
+Widget _defaultHome = const LoginPage();
+// Widget _defaultHome = MyView();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

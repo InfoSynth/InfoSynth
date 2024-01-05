@@ -4,6 +4,9 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
+import '../config.dart';
+import '../utils/authentification.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -13,10 +16,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool isAPIcallProcess = false;
+  bool isAuth = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  String? username;
+  String? email;
   String? password;
+  Authentication authentication = Authentication();
 
   @override
   Widget build(BuildContext context) {
@@ -88,17 +93,16 @@ class _LoginPageState extends State<LoginPage> {
           ),
           FormHelper.inputFieldWidget(
             context,
-            "username",
-            "UserName",
+            "email",
+            "Email",
             (onValidateVal) {
               if (onValidateVal.isEmpty) {
-                return 'Username can\'t be empty.';
+                return 'Email can\'t be empty.';
               }
-
               return null;
             },
             (onSavedVal) {
-              username = onSavedVal;
+              email = onSavedVal;
             },
             borderFocusColor: Colors.white,
             prefixIconColor: Colors.white,
@@ -180,7 +184,27 @@ class _LoginPageState extends State<LoginPage> {
           Center(
             child: FormHelper.submitButton(
               "Login",
-              () {},
+              () async {
+                if (validateAndSave()) {
+                  isAuth = await authentication.authenticate(email, password);
+                  // print(email);
+                  // print(password);
+                  if (isAuth) {
+                    print("Login");
+                  } else {
+                    print("Login failed");
+                    FormHelper.showSimpleAlertDialog(
+                      context,
+                      Config.appName,
+                      "Invalid Username/Password !!",
+                      "OK",
+                      () {
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  }
+                }
+              },
               btnColor: HexColor("#283B71"),
               borderColor: Colors.white,
               txtColor: Colors.white,
@@ -233,5 +257,14 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  bool validateAndSave() {
+    final form = globalFormKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 }

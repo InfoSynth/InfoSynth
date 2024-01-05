@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
@@ -16,8 +15,10 @@ class _RegisterPageState extends State<RegisterPage> {
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? username;
-  String? password;
+  String? birth;
+  bool? isMale;
   String? email;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +115,44 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.only(top: 10),
               child: FormHelper.inputFieldWidget(
                 context,
+                "id",
+                "ID",
+                (onValidateVal) {
+                  if (onValidateVal.isEmpty) {
+                    return 'Password can\'t be empty.';
+                  }
+
+                  return null;
+                },
+                (onSavedVal) {
+                  password = onSavedVal;
+                },
+                borderFocusColor: Colors.white,
+                prefixIconColor: Colors.white,
+                borderColor: Colors.white,
+                textColor: Colors.white,
+                hintColor: Colors.white.withOpacity(0.7),
+                borderRadius: 10,
+                showPrefixIcon: true,
+                prefixIcon: Icon(Icons.account_box),
+                obscureText: hidePassword,
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      hidePassword = !hidePassword;
+                    });
+                  },
+                  color: Colors.white.withOpacity(0.7),
+                  icon: Icon(
+                    hidePassword ? Icons.visibility_off : Icons.visibility,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: FormHelper.inputFieldWidget(
+                context,
                 "password",
                 "Password",
                 (onValidateVal) {
@@ -133,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintColor: Colors.white.withOpacity(0.7),
                 borderRadius: 10,
                 showPrefixIcon: true,
-                prefixIcon: Icon(Icons.person),
+                prefixIcon: Icon(Icons.password),
                 obscureText: hidePassword,
                 suffixIcon: IconButton(
                   onPressed: () {
