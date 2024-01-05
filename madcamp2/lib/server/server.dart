@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:madcamp2/server/network.dart';
 
@@ -26,8 +24,15 @@ class _MyViewState extends State<MyView> {
     Network network = Network('http://localhost:8000/get');
 
     var jsonData = await network.getJsonData();
-    userName = await jsonData[0]['user_name'];
-    userEmail = await jsonData[0]['user_email'];
+
+    setState(() {
+      userName = jsonData[0]['user_name'];
+      userEmail = jsonData[0]['user_email'];
+    });
+
+    // debug
+    print(userName);
+    print(userEmail);
   }
 
   Widget build(BuildContext context) {
