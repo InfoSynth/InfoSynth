@@ -18,6 +18,7 @@ class _MyViewState extends State<MyView> {
     super.initState();
     //state 진입시 api 데이터 파싱.
     getTestData();
+
   }
 
   getTestData() async {
@@ -26,8 +27,11 @@ class _MyViewState extends State<MyView> {
     Network network = Network('http://localhost:8000/get');
 
     var jsonData = await network.getJsonData();
-    userName = await jsonData[0]['user_name'];
-    userEmail = await jsonData[0]['user_email'];
+
+    setState(() {
+      userName = jsonData[0]['user_name'];
+      userEmail = jsonData[0]['user_email'];
+    });
   }
 
   Widget build(BuildContext context) {
@@ -47,3 +51,4 @@ class _MyViewState extends State<MyView> {
     );
   }
 }
+
