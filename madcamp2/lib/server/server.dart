@@ -16,6 +16,7 @@ class _MyViewState extends State<MyView> {
     super.initState();
     //state 진입시 api 데이터 파싱.
     getTestData();
+
   }
 
   getTestData() async {
@@ -29,10 +30,13 @@ class _MyViewState extends State<MyView> {
       userName = jsonData[0]['user_name'];
       userEmail = jsonData[0]['user_email'];
     });
+<<<<<<< HEAD
+=======
 
     // debug
     print(userName);
     print(userEmail);
+>>>>>>> 9cc1c8be01373f764ed7b7eaffb37442fd431c4a
   }
 
   Widget build(BuildContext context) {
@@ -52,3 +56,4 @@ class _MyViewState extends State<MyView> {
     );
   }
 }
+
