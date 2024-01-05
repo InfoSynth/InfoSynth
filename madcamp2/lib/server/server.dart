@@ -16,27 +16,26 @@ class _MyViewState extends State<MyView> {
     super.initState();
     //state 진입시 api 데이터 파싱.
     getTestData();
-
   }
 
   getTestData() async {
     //url을 받아 데이터를 파싱하는 network 메소드 사용. 미리 만들어둠.
     //mysql db에서 유저 데이터를 받아오는 express api 호출
-    Network network = Network('http://localhost:8000/get');
+    Network network = Network();
 
     var jsonData = await network.getJsonData();
+    Map<String, String> newMember = {
+      "user_name": "name_6",
+      "user_email": "user_email",
+      "account_id": "account_id",
+      "account_password": "account_password"
+    };
+    network.addMembers(newMember);
 
     setState(() {
       userName = jsonData[0]['user_name'];
       userEmail = jsonData[0]['user_email'];
     });
-<<<<<<< HEAD
-=======
-
-    // debug
-    print(userName);
-    print(userEmail);
->>>>>>> 9cc1c8be01373f764ed7b7eaffb37442fd431c4a
   }
 
   Widget build(BuildContext context) {
