@@ -16,6 +16,10 @@ class Authentication {
     // });
 
     // Check if the provided email and password match any valid credentials
+    if (validCredentials.isEmpty) {
+      return false;
+    }
+
     return validCredentials.any((credential) =>
         credential['email'] == email && credential['password'] == password);
   }
