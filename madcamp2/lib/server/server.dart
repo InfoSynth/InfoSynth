@@ -23,7 +23,7 @@ class _MyViewState extends State<MyView> {
     //mysql db에서 유저 데이터를 받아오는 express api 호출
     Network network = Network();
 
-    var jsonData = await network.getJsonData();
+    var jsonData = await network.findMembers();
     Map<String, String> newMember = {
       "user_name": "name_6",
       "user_email": "user_email",
