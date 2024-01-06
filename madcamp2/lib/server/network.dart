@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class Network {
-  final baseUrl = "http://http://3.37.132.122:8000";
+  final baseUrl = "http://3.37.132.122:8000";
+  // final baseUrl = "http://localhost:8000";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
@@ -73,7 +74,7 @@ class Network {
     try {
       final response = await post(
         url,
-        body: jsonEncode(updateMember),
+        body: jsonEncode(checkMember),
         headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;

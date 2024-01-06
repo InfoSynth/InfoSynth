@@ -4,33 +4,26 @@ class Authentication {
   static List<Map<String, String>> validCredentials = [];
   late String validUserEmail = '';
   late String validUserPassword = '';
+  Network network = Network();
 
   Future<bool> authenticate(String? email, String? password) async {
     // Simulate an asynchronous authentication process
     await Future.delayed(Duration(seconds: 1));
 
-    await getUserData(); // Await the completion of getUserData
+    Map<String, String> check = {
+      "email": email.toString(),
+      "password": password.toString(),
+    };
 
-    // Check if the provided email and password match any valid credentials
-    if (validCredentials.isEmpty) {
+    var checked_data = await network.checkMember(check);
+
+    var name = checked_data['message'];
+
+    if (name != null) { // 에러 뜬 경우
       return false;
     }
+    return true;
 
-    return validCredentials.any((credential) =>
-        credential['email'] == email && credential['password'] == password);
-  }
 
-  Future<void> getUserData() async {
-    Network network = Network();
-
-    var jsonData = await network.allMember();
-
-    for (var i = 0; i < jsonData.length; i++) {
-      validUserEmail = await jsonData[i]['email'];
-      validUserPassword = await jsonData[i]['password'];
-
-      Authentication.validCredentials
-          .add({'email': validUserEmail, 'password': validUserPassword});
-    }
   }
 }
