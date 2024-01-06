@@ -11,10 +11,6 @@ class Authentication {
 
     await getUserData(); // Await the completion of getUserData
 
-    // validCredentials.forEach((credential) {
-    //   print(credential);
-    // });
-
     // Check if the provided email and password match any valid credentials
     if (validCredentials.isEmpty) {
       return false;

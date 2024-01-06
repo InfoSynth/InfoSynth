@@ -30,7 +30,7 @@ class _MyViewState extends State<MyView> {
       "account_id": "account_id",
       "account_password": "account_password"
     };
-    network.addMembers(newMember);
+    // network.addMembers(newMember);
 
     setState(() {
       userName = jsonData[0]['user_name'];
