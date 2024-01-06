@@ -116,9 +116,6 @@ app.delete("/members/:id", function (req, res) {
 
 // 멤버 확인
 app.post("/members/each", function (req, res) {
-  var name = req.body.name;
-  var birth = req.body.birth;
-  var gender = req.body.gender;
   var email = req.body.email;
   var password = req.body.password;
 
@@ -127,7 +124,7 @@ app.post("/members/each", function (req, res) {
     [email, password],
     function (error, data) {
       if (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error" });
       } else {
         if (data.length == 1) {
           res.json(data);
