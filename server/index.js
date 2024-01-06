@@ -58,31 +58,31 @@ app.post("/members", function (request, response) {
   );
 });
 
-// app.post("/login", function (req, res) {
-//   var user_name = req.body.user_name;
-//   var user_email = req.body.user_email;
-//   var account_id = req.body.account_id;
-//   var account_password = req.body.account_password;
+app.post("/login", function (req, res) {
+  var user_name = req.body.user_name;
+  var user_email = req.body.user_email;
+  var account_id = req.body.account_id;
+  var account_password = req.body.account_password;
 
-//   con.query(
-//     "SELECT * FROM users WHERE account_id = ? AND account_password = ?", [account_id,account_password],
-//     function (error, data) {
-//       if (error) {
-//         res.status(500).json({ error: "Internal Server Error" });
-//       } else {
-//         if (data.length == 1) {
-//           res.json(data);
-//           req.session.is_logined = true;      // 세션 정보 갱신
-//           req.session.nickname = username;
-//           req.session.save(function () {
-//             res.redirect(`/`);
-//           });
-//         } else if(data.length >= 1){
-//           res.status(404).json({ message: "User not found" });
-//         } else {
-//           res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/auth/login";</script>`);
-//         }
-//       }
-//     }
-//   );
-// });
+  con.query(
+    "SELECT * FROM users WHERE account_id = ? AND account_password = ?", [account_id,account_password],
+    function (error, data) {
+      if (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        if (data.length == 1) {
+          res.json(data);
+          req.session.is_logined = true;      // 세션 정보 갱신
+          req.session.nickname = username;
+          req.session.save(function () {
+            res.redirect(`/`);
+          });
+        } else if(data.length >= 1){
+          res.status(404).json({ message: "User not found" });
+        } else {
+          res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/auth/login";</script>`);
+        }
+      }
+    }
+  );
+});

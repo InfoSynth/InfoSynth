@@ -3,6 +3,8 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
+enum genderType { male, female }
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -15,8 +17,10 @@ class _RegisterPageState extends State<RegisterPage> {
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? username;
-  String? birth;
-  bool? isMale;
+
+  // DateTime? birth = DateTime(0, 0, 0);
+  String? birth = "0000-00-00";
+  genderType? gender;
   String? email;
   String? password;
 
@@ -80,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 top: 50,
               ),
               child: Text(
-                "Register",
+                "회원가입",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -91,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
             FormHelper.inputFieldWidget(
               context,
               "username",
-              "UserName",
+              "이름(닉네임)",
               (onValidateVal) {
                 if (onValidateVal.isEmpty) {
                   return 'Username can\'t be empty.';
@@ -115,17 +119,17 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.only(top: 10),
               child: FormHelper.inputFieldWidget(
                 context,
-                "id",
-                "ID",
+                "email",
+                "이메일",
                 (onValidateVal) {
                   if (onValidateVal.isEmpty) {
-                    return 'Password can\'t be empty.';
+                    return 'Email can\'t be empty.';
                   }
 
                   return null;
                 },
                 (onSavedVal) {
-                  password = onSavedVal;
+                  email = onSavedVal;
                 },
                 borderFocusColor: Colors.white,
                 prefixIconColor: Colors.white,
@@ -135,18 +139,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 borderRadius: 10,
                 showPrefixIcon: true,
                 prefixIcon: Icon(Icons.account_box),
-                obscureText: hidePassword,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidePassword = !hidePassword;
-                    });
-                  },
-                  color: Colors.white.withOpacity(0.7),
-                  icon: Icon(
-                    hidePassword ? Icons.visibility_off : Icons.visibility,
-                  ),
-                ),
               ),
             ),
             Padding(
@@ -154,10 +146,10 @@ class _RegisterPageState extends State<RegisterPage> {
               child: FormHelper.inputFieldWidget(
                 context,
                 "password",
-                "Password",
+                "비밀번호",
                 (onValidateVal) {
                   if (onValidateVal.isEmpty) {
-                    return 'Password can\'t be empty.';
+                    return '비밀번호를 입력해주세요.';
                   }
 
                   return null;
@@ -187,30 +179,100 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: FormHelper.inputFieldWidget(
-                context,
-                "email",
-                "email",
-                (onValidateVal) {
-                  if (onValidateVal.isEmpty) {
-                    return 'Username can\'t be empty.';
-                  }
-
-                  return null;
-                },
-                (onSavedVal) {
-                  username = onSavedVal;
-                },
-                borderFocusColor: Colors.white,
-                prefixIconColor: Colors.white,
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                hintColor: Colors.white.withOpacity(0.7),
-                borderRadius: 10,
-                showPrefixIcon: true,
-                prefixIcon: Icon(Icons.person),
+            SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min, // Row의 크기를 최소화
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (birth != null)
+                      Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
+                          child: Text(
+                            "생년월일: $birth",
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    IconButton(
+                      alignment: Alignment.centerRight,
+                      onPressed: () async {
+                        final String? selectedDate = await _birth(context);
+                        if (selectedDate != null) {
+                          setState(() {
+                            birth = selectedDate;
+                            print("Selected Date: $birth");
+                          });
+                        }
+                      },
+                      icon: Icon(
+                        Icons.calendar_today,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: EdgeInsets.all(0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min, // Row의 크기를 최소화
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 25.0),
+                        child: Text(
+                          "성별: $gender",
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: DropdownButton(
+                        value: gender,
+                        items: genderType.values.map((value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(
+                              value == genderType.male ? 'Male' : 'Female',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (selectedGender) {
+                          // Handle value change
+                          setState(() {
+                            gender = selectedGender as genderType?;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(
@@ -218,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             Center(
               child: FormHelper.submitButton(
-                "Register",
+                "회원가입",
                 () {},
                 btnColor: HexColor("#283B71"),
                 borderColor: Colors.white,
@@ -228,5 +290,24 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
           ]),
     );
+  }
+
+  Future<String?> _birth(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      // Format the selected date as a string
+      String formattedDate =
+          "${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}";
+
+      return formattedDate;
+    }
+
+    return null;
   }
 }

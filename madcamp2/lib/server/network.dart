@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
+
 import 'package:http/http.dart';
 
 class Network {
-  final baseUrl = "http://15.164.216.56:8000";
+  final baseUrl = "http://3.37.132.122:8000";
 
   // 전체 멤버 탐색
   Future<dynamic> findMembers() async {
