@@ -41,7 +41,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-private.js
+.private
 
 madcamp2/build/
 madcamp2/ios/

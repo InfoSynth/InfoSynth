@@ -3,7 +3,7 @@ const path = require("path");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 
-var db_data = require("./private");
+var db_data = require("./.private");
 
 const app = express();
 
