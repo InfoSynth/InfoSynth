@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:madcamp2/pages/chat_page.dart';
 
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 
-Widget _defaultHome = const LoginPage();
-// Widget _defaultHome = MyView();
+// Widget _defaultHome = const LoginPage();
+Widget _defaultHome = ChatScreen();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
