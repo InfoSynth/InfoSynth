@@ -4,7 +4,6 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
-import '../config.dart';
 import '../utils/authentification.dart';
 
 class LoginPage extends StatefulWidget {
@@ -195,7 +194,7 @@ class _LoginPageState extends State<LoginPage> {
                     print("Login failed");
                     FormHelper.showSimpleAlertDialog(
                       context,
-                      Config.appName,
+                      "app_name",
                       "Invalid Username/Password !!",
                       "OK",
                       () {

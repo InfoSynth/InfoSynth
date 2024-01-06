@@ -26,6 +26,7 @@ con.connect(function (err) {
   console.log("Connected");
 });
 
+//전체 리스트 가져오기
 app.get("/members", function (req, res) {
   var sql = "select * from users";
   con.query(sql, function (err, results, fields) {
@@ -37,6 +38,7 @@ app.get("/members", function (req, res) {
   });
 });
 
+//리스트 추가 (회원가입)
 app.post("/members", function (request, response) {
   var user_name = request.body.user_name;
   var user_email = request.body.user_email;
@@ -51,38 +53,93 @@ app.post("/members", function (request, response) {
         console.log(error);
         response.status(500).json({ error: "Internal Server Error" });
       } else {
-        console.log(data.insertId);
-        response.json({ message: "User inserted successfully" });
+        res.json({ result: "1" });
       }
     }
   );
 });
 
-// app.post("/login", function (req, res) {
-//   var user_name = req.body.user_name;
-//   var user_email = req.body.user_email;
-//   var account_id = req.body.account_id;
-//   var account_password = req.body.account_password;
+// 멤버 수정
+app.put("/members/:id", function (req, res) {
+  var memberId = req.params.id;
+  var updatedData = req.body;
+  var sql = "UPDATE users SET ? WHERE id = ?";
+  con.query(sql, [updatedData, memberId], function (err, result) {
+    if (err) {
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: "Member not found" });
+      } else {
+        res.json({ result: "1" });
+      }
+    }
+  });
+});
 
-//   con.query(
-//     "SELECT * FROM users WHERE account_id = ? AND account_password = ?", [account_id,account_password],
-//     function (error, data) {
-//       if (error) {
-//         res.status(500).json({ error: "Internal Server Error" });
-//       } else {
-//         if (data.length == 1) {
-//           res.json(data);
-//           req.session.is_logined = true;      // 세션 정보 갱신
-//           req.session.nickname = username;
-//           req.session.save(function () {
-//             res.redirect(`/`);
-//           });
-//         } else if(data.length >= 1){
-//           res.status(404).json({ message: "User not found" });
-//         } else {
-//           res.send(`<script type="text/javascript">alert("로그인 정보가 일치하지 않습니다."); document.location.href="/auth/login";</script>`);
-//         }
-//       }
-//     }
-//   );
-// });
+// 멤버 삭제
+app.delete("/members/:id", function (req, res) {
+  var memberId = req.params.id;
+  var sql = "DELETE FROM users WHERE id = ?";
+  con.query(sql, [memberId], function (err, result) {
+    if (err) {
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      if (result.affectedRows === 0) {
+        res.status(404).json({ error: "Member not found" });
+      } else {
+        res.json({ result: "1" });
+      }
+    }
+  });
+});
+
+// 멤버 1명 가져오기
+app.get("/members/each", function (req, res) {
+  var user_email = req.body.user_email;
+
+  var sql = "select * from users where user_email = ?";
+  con.query(sql, [user_email], function (err, result) {
+    if (err) {
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      if (res.length === 0) {
+        // 해당 ID의 멤버가 없는 경우 404 Not Found 응답을 보냅니다.
+        res.status(404).json({ error: "Member not found" });
+      } else {
+        res.json(result[0]);
+      }
+    }
+  });
+});
+
+// 멤버 확인
+app.post("/members/each", function (req, res) {
+  var user_name = req.body.user_name;
+  var user_email = req.body.user_email;
+  var account_id = req.body.account_id;
+  var account_password = req.body.account_password;
+
+  con.query(
+    "SELECT * FROM users WHERE account_id = ? AND account_password = ?",
+    [account_id, account_password],
+    function (error, data) {
+      if (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        if (data.length == 1) {
+          res.json(data);
+          req.session.is_logined = true; // 세션 정보 갱신
+          req.session.nickname = username;
+          req.session.save(function () {
+            res.redirect(`/`);
+          });
+        } else if (data.length >= 1) {
+          res.status(404).json({ message: "User not found" });
+        } else {
+          res.json({ result: "0" });
+        }
+      }
+    }
+  );
+});
