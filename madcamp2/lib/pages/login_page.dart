@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                   // print(email);
                   // print(password);
                   if (isAuth) {
-                    print("Login");
+                    Navigator.pushNamed(context, '/profile');
                   } else {
                     print("Login failed");
                     FormHelper.showSimpleAlertDialog(
