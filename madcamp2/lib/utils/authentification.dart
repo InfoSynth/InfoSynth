@@ -27,7 +27,7 @@ class Authentication {
   Future<void> getUserData() async {
     Network network = Network();
 
-    var jsonData = await network.findMembers();
+    var jsonData = await network.allMember();
 
     for (var i = 0; i < jsonData.length; i++) {
       validUserEmail = await jsonData[i]['email'];
