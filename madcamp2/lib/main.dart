@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:madcamp2/pages/chat_page.dart';
 
+import 'pages/tab_page.dart';
 import 'pages/login_page.dart';
 import 'pages/register_page.dart';
 import 'pages/profile_page.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
 
       routes: {
         // '/': (context) => _defaultHome,
+        '/tab': (context) => const TabPage(),
         '/home': (context) => const HomePage(),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),

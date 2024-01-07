@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                   isAuth = await authentication.authenticate(email, password);
                   if (isAuth) {
                     saveUserInfo(email.toString(),password.toString());
-                    Navigator.pushNamed(context, '/home');
+                    Navigator.pushNamed(context, '/tab');
                   } else {
                     print("Login failed");
                     FormHelper.showSimpleAlertDialog(
@@ -268,7 +268,7 @@ class _LoginPageState extends State<LoginPage> {
   }
   Future<void> saveUserInfo(String username, String email) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('username', username);
-    prefs.setString('email', email);
+    await prefs.setString('username', username);
+    await prefs.setString('email', email);
   }
 }
