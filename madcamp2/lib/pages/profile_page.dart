@@ -3,6 +3,7 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:madcamp2/server/network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 enum genderType { male, female }
 
@@ -14,11 +15,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   late String userName = '';
-  late String userEmail = '';
   late String userBirth = '';
   late genderType userGender = genderType.female;
+  late String userEmail = '';
   late String userPassword = '';
 
   bool isAPIcallProcess = false;
@@ -29,26 +29,33 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    //state 진입시 api 데이터 파싱.
-    getTestData();
-    getUserInfo();
-
-
+    getData();
   }
 
-  getTestData() async {
-    Network network = Network();
-    var jsonData = await network.allMember();
+  getData() async {
+    await getLoginInfo();
+    await getDbData();
+  }
 
+  getDbData() async {
+    Network network = Network();
+    Map<String, String> check = {
+      "email": userEmail,
+    };
+    var checked_data = await network.findMemberByData(check);
+
+    DateTime date = DateTime.parse(checked_data[0]['birth']);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     setState(() {
-      userName = jsonData[0]['name'];
-      userEmail = jsonData[0]['email'];
-      userBirth = jsonData[0]['birth'];
-      // userGender = jsonData[0]['gender'];
-      userPassword = jsonData[0]['password'];
+      userName = checked_data[0]['name'];
+      userBirth = formattedDate;
+      // userGender = checked_data['gender'];
+      userEmail = checked_data[0]['email'];
+      userPassword = checked_data[0]['password'];
     });
   }
-  getUserInfo() async {
+
+  getLoginInfo() async {
     final prefs = await SharedPreferences.getInstance();
     final username = prefs.getString('username') ?? '';
     final email = prefs.getString('email') ?? '';
@@ -61,11 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final imageSize = MediaQuery.of(context).size.width / 3;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('설정'),),
       body: Column(
         children: [
           Container(
@@ -75,14 +80,15 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             child: Center(
               child: Column(
-
                 children: [
                   Icon(
                     Icons.account_circle,
                     size: imageSize,
                   ),
                   Text('${userName}'),
+                  Text('${userBirth}'),
                   Text('${userEmail}'),
+                  Text('${userPassword}'),
                 ],
               ),
             ),
@@ -91,6 +97,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-
 }

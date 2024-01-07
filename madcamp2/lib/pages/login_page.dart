@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/authentification.dart';
 
@@ -188,8 +188,8 @@ class _LoginPageState extends State<LoginPage> {
                 if (validateAndSave()) {
                   isAuth = await authentication.authenticate(email, password);
                   if (isAuth) {
-                    saveUserInfo(email.toString(), password.toString());
-                    Navigator.pushNamed(context, '/profile');
+                    saveUserInfo(email.toString(),password.toString());
+                    Navigator.pushNamed(context, '/tab');
                   } else {
                     print("Login failed");
                     FormHelper.showSimpleAlertDialog(
@@ -266,10 +266,9 @@ class _LoginPageState extends State<LoginPage> {
     }
     return false;
   }
-
   Future<void> saveUserInfo(String username, String email) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('username', username);
-    prefs.setString('email', email);
+    await prefs.setString('username', username);
+    await prefs.setString('email', email);
   }
 }
