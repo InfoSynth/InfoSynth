@@ -85,6 +85,22 @@ class Network {
       return {};
     }
   }
+  Future<Map> findMemberByData(Map<String, String> checkMember) async {
+    var url = Uri.parse(baseUrl + '/members/check');
+    try {
+      final response = await post(
+        url,
+        body: jsonEncode(checkMember),
+        headers: {"Content-Type": "application/json"},
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
 
 
 }

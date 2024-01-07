@@ -29,26 +29,31 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    //state 진입시 api 데이터 파싱.
-    getTestData();
-    getUserInfo();
-
-
+    getData();
   }
 
-  getTestData() async {
+  getData() async{
+    await getLoginInfo();
+    await getDbData();
+
+  }
+  getDbData() async {
     Network network = Network();
-    var jsonData = await network.allMember();
+    Map<String, String> check = {
+      "email": userEmail,
+    };
+    var checked_data = await network.findMemberByData(check);
 
     setState(() {
-      userName = jsonData[0]['name'];
-      userEmail = jsonData[0]['email'];
-      userBirth = jsonData[0]['birth'];
-      // userGender = jsonData[0]['gender'];
-      userPassword = jsonData[0]['password'];
+      userName = checked_data['name'];
+      userEmail = checked_data['email'];
+      userBirth = checked_data['birth'];
+      // userGender = checked_data['gender'];
+      userPassword = checked_data['password'];
     });
   }
-  getUserInfo() async {
+
+  getLoginInfo() async {
     final prefs = await SharedPreferences.getInstance();
     final username = prefs.getString('username') ?? '';
     final email = prefs.getString('email') ?? '';
@@ -65,7 +70,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final imageSize = MediaQuery.of(context).size.width / 3;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('설정'),),
       body: Column(
         children: [
           Container(
