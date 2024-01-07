@@ -45,3 +45,6 @@ app.*.map.json
 
 madcamp2/build/
 madcamp2/ios/
+madcamp2/macos/
+
+*.lock

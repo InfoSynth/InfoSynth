@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'pages/login_page.dart';
-import 'pages/register_page.dart';
 import 'pages/profile_page.dart';
+import 'pages/register_page.dart';
 
 Widget _defaultHome = const LoginPage();
 // Widget _defaultHome = ChatScreen();
