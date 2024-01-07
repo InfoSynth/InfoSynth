@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/authentification.dart';
 
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
               top: 50,
             ),
             child: Text(
-              "Login",
+              "로그인",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
           FormHelper.inputFieldWidget(
             context,
             "email",
-            "Email",
+            "이메일",
             (onValidateVal) {
               if (onValidateVal.isEmpty) {
                 return 'Email can\'t be empty.';
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
             child: FormHelper.inputFieldWidget(
               context,
               "password",
-              "Password",
+              "비밀번호",
               (onValidateVal) {
                 if (onValidateVal.isEmpty) {
                   return 'Password can\'t be empty.';
@@ -151,44 +151,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 25, top: 10),
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14.0,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'Forget Password ?',
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          print("Forget Password");
-                        },
-                      style: TextStyle(
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
           SizedBox(
-            height: 20,
+            height: 30,
           ),
           Center(
             child: FormHelper.submitButton(
-              "Login",
+              "로그인",
               () async {
                 if (validateAndSave()) {
                   isAuth = await authentication.authenticate(email, password);
                   if (isAuth) {
-                    saveUserInfo(email.toString(),password.toString());
+                    saveUserInfo(email.toString());
                     Navigator.pushNamed(context, '/tab');
                   } else {
                     print("Login failed");
@@ -236,9 +209,9 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 14.0,
                   ),
                   children: <TextSpan>[
-                    TextSpan(text: "Don't have an account? "),
+                    TextSpan(text: "계정이 없으신가요? "),
                     TextSpan(
-                      text: 'Sign up',
+                      text: '회원가입',
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           Navigator.pushNamed(context, '/register');
@@ -266,9 +239,10 @@ class _LoginPageState extends State<LoginPage> {
     }
     return false;
   }
-  Future<void> saveUserInfo(String username, String email) async {
+
+  Future<void> saveUserInfo(String email) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', username);
+    // await prefs.setString('username', username);
     await prefs.setString('email', email);
   }
 }
