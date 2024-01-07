@@ -85,7 +85,7 @@ class Network {
       return {};
     }
   }
-  Future<Map> findMemberByData(Map<String, String> checkMember) async {
+  Future<dynamic> findMemberByData(Map<String, String> checkMember) async {
     var url = Uri.parse(baseUrl + '/members/check');
     try {
       final response = await post(

@@ -3,6 +3,7 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:madcamp2/server/network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 enum genderType { male, female }
 
@@ -15,9 +16,9 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late String userName = '';
-  late String userEmail = '';
   late String userBirth = '';
   late genderType userGender = genderType.female;
+  late String userEmail = '';
   late String userPassword = '';
 
   bool isAPIcallProcess = false;
@@ -43,12 +44,14 @@ class _ProfilePageState extends State<ProfilePage> {
     };
     var checked_data = await network.findMemberByData(check);
 
+    DateTime date = DateTime.parse(checked_data[0]['birth']);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     setState(() {
-      userName = checked_data['name'];
-      userEmail = checked_data['email'];
-      userBirth = checked_data['birth'];
+      userName = checked_data[0]['name'];
+      userBirth = formattedDate;
       // userGender = checked_data['gender'];
-      userPassword = checked_data['password'];
+      userEmail = checked_data[0]['email'];
+      userPassword = checked_data[0]['password'];
     });
   }
 
@@ -83,7 +86,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     size: imageSize,
                   ),
                   Text('${userName}'),
+                  Text('${userBirth}'),
                   Text('${userEmail}'),
+                  Text('${userPassword}'),
                 ],
               ),
             ),
