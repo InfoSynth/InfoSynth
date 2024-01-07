@@ -25,7 +25,10 @@ class _TabPageState extends State<TabPage> {
     final imageSize = MediaQuery.of(context).size.width / 3;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Dating App'),),
+      appBar: AppBar(
+        title: const Text('Dating App'),
+        automaticallyImplyLeading: false,
+      ),
       body: DefaultTabController(
           length: 3,
           child: Scaffold(
