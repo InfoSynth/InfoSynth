@@ -29,6 +29,7 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+/build/
 
 # Symbolication related
 app.*.symbols
@@ -41,15 +42,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-.private
-
-madcamp2/build/
-madcamp2/ios/
-madcamp2/macos/
-madcamp2/linux/
-madcamp2/windows/
-
-*.lock
-
-.metadata
-
+/linux/
+/windows/
+/ios/
