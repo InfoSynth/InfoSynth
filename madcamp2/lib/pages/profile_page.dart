@@ -14,7 +14,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   late String userName = '';
   late String userEmail = '';
   late String userBirth = '';
@@ -32,11 +31,11 @@ class _ProfilePageState extends State<ProfilePage> {
     getData();
   }
 
-  getData() async{
+  getData() async {
     await getLoginInfo();
     await getDbData();
-
   }
+
   getDbData() async {
     Network network = Network();
     Map<String, String> check = {
@@ -45,11 +44,11 @@ class _ProfilePageState extends State<ProfilePage> {
     var checked_data = await network.findMemberByData(check);
 
     setState(() {
-      userName = checked_data['name'].toString();
-      userEmail = checked_data['email'].toString();
-      userBirth = checked_data['birth'].toString();
+      userName = checked_data['name'];
+      userEmail = checked_data['email'];
+      userBirth = checked_data['birth'];
       // userGender = checked_data['gender'];
-      userPassword = checked_data['password'].toString();
+      userPassword = checked_data['password'];
     });
   }
 
@@ -66,7 +65,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final imageSize = MediaQuery.of(context).size.width / 3;
 
     return Scaffold(
@@ -79,7 +77,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             child: Center(
               child: Column(
-
                 children: [
                   Icon(
                     Icons.account_circle,
@@ -95,6 +92,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-
 }
