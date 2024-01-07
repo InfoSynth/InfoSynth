@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                   isAuth = await authentication.authenticate(email, password);
                   if (isAuth) {
                     saveUserInfo(email.toString(),password.toString());
-                    Navigator.pushNamed(context, '/profile');
+                    Navigator.pushNamed(context, '/home');
                   } else {
                     print("Login failed");
                     FormHelper.showSimpleAlertDialog(
