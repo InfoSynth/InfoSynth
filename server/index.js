@@ -137,3 +137,48 @@ app.post("/members/each", function (req, res) {
     }
   );
 });
+
+// 멤버 확인
+app.post("/members/check", function (req, res) {
+  var id = req.body.id;
+  var name = req.body.name;
+  var birth = req.body.birth;
+  var gender = req.body.gender;
+  var email = req.body.email;
+  var password = req.body.password;
+
+  if (name === undefined) {
+    name = "%"; // email이 undefined일 때 "%"를 할당
+  }
+  if (birth === undefined) {
+    birth = "%"; // email이 undefined일 때 "%"를 할당
+  }
+  if (gender === undefined) {
+    gender = "%"; // email이 undefined일 때 "%"를 할당
+  }
+  if (email === undefined) {
+    email = "%"; // email이 undefined일 때 "%"를 할당
+  }
+  if (password === undefined) {
+    password = "%"; // email이 undefined일 때 "%"를 할당
+  }
+
+  name, birth, gender, email, password;
+  con.query(
+    "SELECT * FROM users WHERE name like ? AND birth like ? AND gender like ? AND email like ? AND password like ?",
+    [name, birth, gender, email, password],
+    function (error, data) {
+      if (error) {
+        res.status(500).json({ message: "Internal Server Error" });
+      } else {
+        if (data.length == 1) {
+          res.json(data);
+        } else if (data.length >= 1) {
+          res.status(404).json({ message: "Too Many User" });
+        } else {
+          res.status(404).json({ message: "No User" });
+        }
+      }
+    }
+  );
+});
