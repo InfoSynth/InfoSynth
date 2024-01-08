@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart';
+import '../utils/user.dart';
 
 class Network {
   // final baseUrl = "http://3.37.132.122:8000";
   final baseUrl = "http://localhost:8000/api/users";
-  String yourToken = "";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
@@ -13,7 +13,7 @@ class Network {
       url,
       headers: {
       "Content-Type": "application/json",
-      "Authorization": "Bearer $yourToken"
+      "Authorization": "Bearer ${User.current.token}"
       },
     );
     var userJson = response.body;
@@ -31,7 +31,7 @@ class Network {
         body: jsonEncode(newMember),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $yourToken"
+          "Authorization": "Bearer ${User.current.token}"
         },
       );
       return jsonDecode(response.body);
@@ -48,7 +48,7 @@ class Network {
         url,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $yourToken"
+          "Authorization": "Bearer ${User.current.token}"
         },
       );
       var userJson = response.body;
@@ -66,12 +66,12 @@ class Network {
         url,
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $yourToken"
+          "Authorization": "Bearer ${User.current.token}"
         },
       );
       var userJson = response.body;
       var parsingData = jsonDecode(userJson);
-      return parsingData;
+      return parsingData['data'];
     } catch (e) {
       print(e);
       return {};
@@ -85,7 +85,7 @@ class Network {
         body: jsonEncode(updateMember),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer $yourToken"
+          "Authorization": "Bearer ${User.current.token}"
         },
       );
       return jsonDecode(response.body);
@@ -104,9 +104,9 @@ class Network {
         headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;
-      var parsingData = jsonDecode(userJson);
-      yourToken = parsingData['token'];
-      return parsingData;
+      var jsonResponse = jsonDecode(userJson);
+      User.initialize('1', checkMember['email']!, 'name', jsonResponse["token"]);
+      return jsonResponse;
     } catch (e) {
       print(["error",e]);
       return {};
