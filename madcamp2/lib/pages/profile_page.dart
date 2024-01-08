@@ -120,8 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: CircleAvatar(
         radius: profileHeight / 2,
         backgroundColor: Colors.grey.shade800,
-        backgroundImage: NetworkImage(
-            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8JUVCJUFBJUE4JUVCJThEJUI4fGVufDB8fDB8fHww"),
+        backgroundImage: NetworkImage("https://source.unsplash.com/random"),
       ),
     );
   }

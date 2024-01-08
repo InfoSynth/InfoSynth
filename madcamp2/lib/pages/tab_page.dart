@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:madcamp2/pages/home_page.dart';
+
 import 'ai_page.dart';
 import 'profile_page.dart';
 
@@ -24,10 +25,10 @@ class _TabPageState extends State<TabPage> {
     final imageSize = MediaQuery.of(context).size.width / 3;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dating App'),
-        automaticallyImplyLeading: false,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('InfoSynth'),
+      //   automaticallyImplyLeading: false,
+      // ),
       body: DefaultTabController(
           length: 3,
           child: Scaffold(

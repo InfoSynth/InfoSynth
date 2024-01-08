@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
 
 import '../server/network.dart';
 
@@ -21,9 +20,10 @@ class _RegisterPageState extends State<RegisterPage> {
   String? username;
 
   // DateTime? birth = DateTime(0, 0, 0);
-  String? birth = "0000-00-00";
+  String? birth = "1901-01-01";
   genderType? gender;
   String? gender_;
+  String? genderOnly = "성별";
   String? email;
   String? password;
 
@@ -33,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: HexColor("#283B71"),
+      backgroundColor: Colors.white,
       body: ProgressHUD(
         child: Form(
           key: globalFormKey,
@@ -60,8 +60,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.white,
-                      Colors.white,
+                      Colors.black54,
+                      Colors.black54,
                     ],
                   ),
                   borderRadius: BorderRadius.only(
@@ -93,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -103,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
               "이름(닉네임)",
               (onValidateVal) {
                 if (onValidateVal.isEmpty) {
-                  return 'Username can\'t be empty.';
+                  return '이름(닉네임)을 입력해주세요.';
                 }
 
                 return null;
@@ -111,11 +111,11 @@ class _RegisterPageState extends State<RegisterPage> {
               (onSavedVal) {
                 username = onSavedVal;
               },
-              borderFocusColor: Colors.white,
-              prefixIconColor: Colors.white,
-              borderColor: Colors.white,
-              textColor: Colors.white,
-              hintColor: Colors.white.withOpacity(0.7),
+              borderFocusColor: Colors.black,
+              prefixIconColor: Colors.black,
+              borderColor: Colors.black,
+              textColor: Colors.black,
+              hintColor: Colors.black.withOpacity(0.7),
               borderRadius: 10,
               showPrefixIcon: true,
               prefixIcon: Icon(Icons.person),
@@ -128,7 +128,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 "이메일",
                 (onValidateVal) {
                   if (onValidateVal.isEmpty) {
-                    return 'Email can\'t be empty.';
+                    return '이메일을 입력해주세요.';
+                  }
+
+                  if (validateEmail(onValidateVal) != null) {
+                    return validateEmail(onValidateVal);
                   }
 
                   return null;
@@ -136,11 +140,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 (onSavedVal) {
                   email = onSavedVal;
                 },
-                borderFocusColor: Colors.white,
-                prefixIconColor: Colors.white,
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                hintColor: Colors.white.withOpacity(0.7),
+                borderFocusColor: Colors.black,
+                prefixIconColor: Colors.black,
+                borderColor: Colors.black,
+                textColor: Colors.black,
+                hintColor: Colors.black.withOpacity(0.7),
                 borderRadius: 10,
                 showPrefixIcon: true,
                 prefixIcon: Icon(Icons.account_box),
@@ -157,16 +161,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     return '비밀번호를 입력해주세요.';
                   }
 
+                  if (validatePassword(onValidateVal) != null) {
+                    return validatePassword(onValidateVal);
+                  }
+
                   return null;
                 },
                 (onSavedVal) {
                   password = onSavedVal;
                 },
-                borderFocusColor: Colors.white,
-                prefixIconColor: Colors.white,
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                hintColor: Colors.white.withOpacity(0.7),
+                borderFocusColor: Colors.black,
+                prefixIconColor: Colors.black,
+                borderColor: Colors.black,
+                textColor: Colors.black,
+                hintColor: Colors.black.withOpacity(0.7),
                 borderRadius: 10,
                 showPrefixIcon: true,
                 prefixIcon: Icon(Icons.password),
@@ -177,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       hidePassword = !hidePassword;
                     });
                   },
-                  color: Colors.white.withOpacity(0.7),
+                  color: Colors.black.withOpacity(0.7),
                   icon: Icon(
                     hidePassword ? Icons.visibility_off : Icons.visibility,
                   ),
@@ -192,7 +200,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 50,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
+                  border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: EdgeInsets.all(0),
@@ -205,8 +213,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 25.0),
                           child: Text(
-                            "생년월일: $birth",
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            (birth == "1901-01-01")
+                                ? "생년월일을 입력해주세요."
+                                : birth.toString(),
+                            style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
                         ),
                       ),
@@ -223,7 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       },
                       icon: Icon(
                         Icons.calendar_today,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -238,7 +248,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 50,
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
+                  border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 padding: EdgeInsets.all(0),
@@ -250,8 +260,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 25.0),
                         child: Text(
-                          "성별: $gender",
-                          style: TextStyle(fontSize: 16, color: Colors.white),
+                          "$genderOnly",
+                          style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ),
                     ),
@@ -263,7 +273,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           return DropdownMenuItem(
                             value: value,
                             child: Text(
-                              value == genderType.male ? 'Male' : 'Female',
+                              value == genderType.male ? '남자' : '여자',
                               style: TextStyle(color: Colors.black),
                             ),
                           );
@@ -272,6 +282,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           // Handle value change
                           setState(() {
                             gender = selectedGender as genderType?;
+                            if (gender.toString().contains("female")) {
+                              genderOnly = "여자";
+                            } else if (gender.toString().contains("male")) {
+                              genderOnly = "남자";
+                            } else {
+                              genderOnly = "성별";
+                            }
                           });
                         },
                       ),
@@ -300,34 +317,32 @@ class _RegisterPageState extends State<RegisterPage> {
                     }
                     newmember['gender'] = gender_!;
                     var success = await network.addMember(newmember);
-                    if(success['success']==1){
+                    if (success['success'] == 1) {
                       FormHelper.showSimpleAlertDialog(
                         context,
                         "app_name",
                         "회원가입 성공 !!",
                         "OK",
-                            () {
+                        () {
                           Navigator.pushNamed(context, '/login');
                         },
                       );
-                    }
-                    else{
+                    } else {
                       FormHelper.showSimpleAlertDialog(
                         context,
                         "app_name",
                         "회원가입 실패 !!",
                         "OK",
-                            () {
+                        () {
                           Navigator.pushNamed(context, '/register');
                         },
                       );
                     }
-
                   }
                 },
-                btnColor: HexColor("#283B71"),
-                borderColor: Colors.white,
-                txtColor: Colors.white,
+                btnColor: Colors.white,
+                borderColor: Colors.black,
+                txtColor: Colors.black,
                 borderRadius: 10,
               ),
             ),
@@ -361,5 +376,28 @@ class _RegisterPageState extends State<RegisterPage> {
       return true;
     }
     return false;
+  }
+
+  // 이메일 형식 확인 함수
+  String? validateEmail(String value) {
+    String pattern =
+        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$'; // 기본적인 이메일 형식 정규식
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return '올바른 이메일 형식이 아닙니다.';
+    }
+    return null;
+  }
+
+// 비밀번호 형식 확인 함수
+  String? validatePassword(String value) {
+    // 비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 함
+    String pattern =
+        r'^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}|:;<>,.?/~]).{8,}$';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
+    }
+    return null;
   }
 }

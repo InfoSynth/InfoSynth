@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
 
 import '../utils/authentification.dart';
 
@@ -27,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: HexColor("#283B71"),
+      backgroundColor: Colors.white,
       body: ProgressHUD(
         child: Form(
           key: globalFormKey,
@@ -48,14 +47,14 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4.5,
+            height: MediaQuery.of(context).size.height / 5,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.white,
-                    Colors.white,
+                    Colors.black54,
+                    Colors.black54,
                   ],
                 ),
                 borderRadius: BorderRadius.only(
@@ -87,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25,
-                color: Colors.white,
+                color: Colors.black,
               ),
             ),
           ),
@@ -97,18 +96,18 @@ class _LoginPageState extends State<LoginPage> {
             "이메일",
             (onValidateVal) {
               if (onValidateVal.isEmpty) {
-                return 'Email can\'t be empty.';
+                return '이메일을 입력해주세요.';
               }
               return null;
             },
             (onSavedVal) {
               email = onSavedVal;
             },
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.7),
+            borderFocusColor: Colors.black,
+            prefixIconColor: Colors.black,
+            borderColor: Colors.black,
+            textColor: Colors.black,
+            hintColor: Colors.black.withOpacity(0.7),
             borderRadius: 10,
             showPrefixIcon: true,
             prefixIcon: Icon(Icons.person),
@@ -121,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               "비밀번호",
               (onValidateVal) {
                 if (onValidateVal.isEmpty) {
-                  return 'Password can\'t be empty.';
+                  return '비밀번호를 입력해주세요.';
                 }
 
                 return null;
@@ -129,11 +128,11 @@ class _LoginPageState extends State<LoginPage> {
               (onSavedVal) {
                 password = onSavedVal;
               },
-              borderFocusColor: Colors.white,
-              prefixIconColor: Colors.white,
-              borderColor: Colors.white,
-              textColor: Colors.white,
-              hintColor: Colors.white.withOpacity(0.7),
+              borderFocusColor: Colors.black,
+              prefixIconColor: Colors.black,
+              borderColor: Colors.black,
+              textColor: Colors.black,
+              hintColor: Colors.black.withOpacity(0.7),
               borderRadius: 10,
               showPrefixIcon: true,
               prefixIcon: Icon(Icons.person),
@@ -144,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                     hidePassword = !hidePassword;
                   });
                 },
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.black.withOpacity(0.7),
                 icon: Icon(
                   hidePassword ? Icons.visibility_off : Icons.visibility,
                 ),
@@ -177,9 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 }
               },
-              btnColor: HexColor("#283B71"),
-              borderColor: Colors.white,
-              txtColor: Colors.white,
+              btnColor: Colors.white,
+              borderColor: Colors.black,
+              txtColor: Colors.black,
               borderRadius: 10,
             ),
           ),
@@ -192,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
-                  color: Colors.white),
+                  color: Colors.black),
             ),
           ),
           SizedBox(
@@ -217,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushNamed(context, '/register');
                         },
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         decoration: TextDecoration.underline,
                       ),
                     ),

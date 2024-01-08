@@ -59,13 +59,15 @@ class _AIPageState extends State<AIPage> {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ${dotenv.env['token']}'
             },
-            body: jsonEncode({
+            body: utf8.encode(jsonEncode({
               "model": "gpt-3.5-turbo-instruct",
               "prompt": promptController.text,
               "max_tokens": 250,
               "temperature": 0,
               "top_p": 1,
-            }));
+            })));
+
+    // print('Raw Response: ${response.body}');
 
     // if (response.statusCode == 200) {
     //   try {
@@ -92,7 +94,7 @@ class _AIPageState extends State<AIPage> {
       final Map<String, dynamic> responseBody = jsonDecode(response.body);
       _responseModel = ResponseModel.fromMap(responseBody);
       setState(() {
-        responseTxt = _responseModel.choices[0].text;
+        responseTxt = utf8.decode(responseBody['choices'][0]['text'].codeUnits);
       });
     } catch (e) {
       print('Error decoding JSON: $e');
