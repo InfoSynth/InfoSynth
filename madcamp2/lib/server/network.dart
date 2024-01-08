@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import '../utils/user.dart';
 
 class Network {
-  final baseUrl = "http://3.37.132.122:8000";
+  final baseUrl = "http://3.37.132.122:8000/api/users";
 
   // final baseUrl = "http://localhost:8000/api/users";
 
@@ -32,10 +32,7 @@ class Network {
       final response = await post(
         url,
         body: jsonEncode(newMember),
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${User.current.token}"
-        },
+        headers: {"Content-Type": "application/json"},
       );
       return jsonDecode(response.body);
     } catch (e) {
