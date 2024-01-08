@@ -25,18 +25,22 @@ class Network {
   }
 
   // 회원가입 또는 멤버 추가
-  Future<Map> addMember(Map<String, String> newMember) async {
+  Future<dynamic> addMember(Map<String, String> newMember) async {
     var url = Uri.parse(baseUrl + '/');
 
     try {
       final response = await post(
         url,
         body: jsonEncode(newMember),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+        },
       );
       return jsonDecode(response.body);
     } catch (e) {
       print(e);
+      print("실패!!!!!!!!");
+
       return {};
     }
   }

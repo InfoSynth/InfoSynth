@@ -11,19 +11,21 @@ const { sign } = require("jsonwebtoken");
 module.exports = {
   createUser: (req, res) => {
     const body = req.body;
+    console.log("controller");
+    console.log(body);
     const salt = genSaltSync(10);
     body.password = hashSync(body.password, salt);
     create(body, (err, results) => {
       if (err) {
         console.log(err);
         return res.status(500).json({
-          sucess: 0,
-          message: "Database connect error",
+          success: 0,
         });
       }
       return res.status(200).json({
-        sucess: 1,
+        success: 1,
         data: results,
+        message: "Success",
       });
     });
   },
@@ -72,7 +74,7 @@ module.exports = {
         return;
       }
       return res.json({
-        sucess: 1,
+        success: 1,
         data: results,
       });
     });

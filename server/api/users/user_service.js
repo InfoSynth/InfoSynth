@@ -4,8 +4,9 @@ const con = require("../../database");
 
 module.exports = {
   create: (data, callBack) => {
-    // var id = data.body.id;
-    // console.log(data);
+    console.log("controller");
+    console.log(data);
+
     var name = data.name;
     var birth = data.birth;
     var gender = data.gender;
@@ -18,6 +19,8 @@ module.exports = {
         if (error) {
           return callBack(error);
         }
+        console.log("no error in service");
+        console.log(results);
         return callBack(null, results);
       }
     );
