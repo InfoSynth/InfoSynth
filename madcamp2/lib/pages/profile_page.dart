@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Map<String, String> check = {
       "email": userEmail,
     };
-    var checked_data = await network.findMemberByData(check);
+    var checked_data = await network.checkMemberByEmail(check);
 
     DateTime date = DateTime.parse(checked_data[0]['birth']);
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);

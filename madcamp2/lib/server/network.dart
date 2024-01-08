@@ -2,13 +2,20 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class Network {
-  final baseUrl = "http://3.37.132.122:8000";
-  // final baseUrl = "http://localhost:8000";
+  // final baseUrl = "http://3.37.132.122:8000";
+  final baseUrl = "http://localhost:8000/api/users";
+  String yourToken = "";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
-    var url = Uri.parse(baseUrl + '/members');
-    final response = await get(url);
+    var url = Uri.parse(baseUrl + '/');
+    final response = await get(
+      url,
+      headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $yourToken"
+      },
+    );
     var userJson = response.body;
     var parsingData = jsonDecode(userJson);
     return parsingData;
@@ -16,12 +23,16 @@ class Network {
 
   // 회원가입 또는 멤버 추가
   Future<Map> addMember(Map<String, String> newMember) async {
-    var url = Uri.parse(baseUrl + '/members');
+    var url = Uri.parse(baseUrl + '/');
+
     try {
       final response = await post(
         url,
         body: jsonEncode(newMember),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $yourToken"
+        },
       );
       return jsonDecode(response.body);
     } catch (e) {
@@ -31,9 +42,33 @@ class Network {
   }
 
   Future<Map> getMember(String id) async {
-    var url = Uri.parse(baseUrl + '/members');
+    var url = Uri.parse(baseUrl + '/'+ id);
     try {
-      final response = await get(url);
+      final response = await get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $yourToken"
+        },
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
+  Future<Map> checkMemberByEmail(Map<String, String> checkMember) async {
+    var url = Uri.parse(baseUrl + '/'+ checkMember['email'].toString());
+    try {
+      final response = await get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $yourToken"
+        },
+      );
       var userJson = response.body;
       var parsingData = jsonDecode(userJson);
       return parsingData;
@@ -43,13 +78,15 @@ class Network {
     }
   }
   Future<Map> updateMember(Map<String, String> updateMember) async {
-    var id = updateMember['id'];
-    var url = Uri.parse(baseUrl + '/members/' + id.toString());
+    var url = Uri.parse(baseUrl + '/');
     try {
       final response = await  put(
         url,
         body: jsonEncode(updateMember),
-        headers: {"Content-Type": "application/json"},
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $yourToken"
+        },
       );
       return jsonDecode(response.body);
     } catch (e) {
@@ -58,49 +95,24 @@ class Network {
     }
   }
 
-  Future<Map> deleteMember(String deleteMemberId) async {
-    var url = Uri.parse(baseUrl + '/members/' + deleteMemberId);
+  Future<dynamic> login(Map<String, String> checkMember) async {
+    var url = Uri.parse(baseUrl + '/login');
     try {
-      final response = await delete(url);
-      return jsonDecode(response.body);
+      final response = await post(
+        url,
+        body: jsonEncode(checkMember),
+        headers: {"Content-Type": "application/json"},
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      yourToken = parsingData['token'];
+      return parsingData;
     } catch (e) {
-      print(e);
+      print(["error",e]);
       return {};
     }
   }
 
-  Future<Map> checkMember(Map<String, String> checkMember) async {
-    var url = Uri.parse(baseUrl + '/members/each');
-    try {
-      final response = await post(
-        url,
-        body: jsonEncode(checkMember),
-        headers: {"Content-Type": "application/json"},
-      );
-      var userJson = response.body;
-      var parsingData = jsonDecode(userJson);
-      return parsingData;
-    } catch (e) {
-      print(e);
-      return {};
-    }
-  }
-  Future<dynamic> findMemberByData(Map<String, String> checkMember) async {
-    var url = Uri.parse(baseUrl + '/members/check');
-    try {
-      final response = await post(
-        url,
-        body: jsonEncode(checkMember),
-        headers: {"Content-Type": "application/json"},
-      );
-      var userJson = response.body;
-      var parsingData = jsonDecode(userJson);
-      return parsingData;
-    } catch (e) {
-      print(e);
-      return {};
-    }
-  }
 
 
 }

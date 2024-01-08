@@ -53,3 +53,10 @@ madcamp2/windows/
 
 .metadata
 
+package-lock.json
+
+server/node_modules/
+server/node_modules/.package-lock.json
+
+
+
