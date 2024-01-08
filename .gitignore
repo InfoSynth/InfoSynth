@@ -46,5 +46,17 @@ app.*.map.json
 madcamp2/build/
 madcamp2/ios/
 madcamp2/macos/
+madcamp2/linux/
+madcamp2/windows/
 
 *.lock
+
+.metadata
+
+package-lock.json
+
+server/node_modules/
+server/node_modules/.package-lock.json
+
+
+

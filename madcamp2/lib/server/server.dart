@@ -24,12 +24,12 @@ class _MyViewState extends State<MyView> {
     Network network = Network();
 
     var jsonData = await network.allMember();
-    Map<String, String> newMember = {
-      "user_name": "name_6",
-      "user_email": "user_email",
-      "account_id": "account_id",
-      "account_password": "account_password"
-    };
+    // Map<String, String> newMember = {
+    //   "user_name": "name_6",
+    //   "user_email": "user_email",
+    //   "account_id": "account_id",
+    //   "account_password": "account_password"
+    // };
     // network.addMembers(newMember);
 
     setState(() {

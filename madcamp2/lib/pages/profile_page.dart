@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:madcamp2/server/network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../utils/user.dart';
 
 enum genderType { male, female }
 
@@ -44,16 +45,17 @@ class _ProfilePageState extends State<ProfilePage> {
     Map<String, String> check = {
       "email": userEmail,
     };
-    var checked_data = await network.findMemberByData(check);
+    var checked_data = await network.checkMemberByEmail(check);
 
-    DateTime date = DateTime.parse(checked_data[0]['birth']);
+    DateTime date = DateTime.parse(checked_data['birth']);
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
     setState(() {
-      userName = checked_data[0]['name'];
+      userName = checked_data['name'];
       userBirth = formattedDate;
       // userGender = checked_data['gender'];
-      userEmail = checked_data[0]['email'];
-      userPassword = checked_data[0]['password'];
+      userEmail = checked_data['email'];
+      userPassword = checked_data['password'];
     });
   }
 

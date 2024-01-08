@@ -26,6 +26,7 @@ class _TabPageState extends State<TabPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dating App'),
+        automaticallyImplyLeading: false,
       ),
       body: DefaultTabController(
           length: 3,
