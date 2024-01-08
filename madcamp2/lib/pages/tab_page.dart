@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:madcamp2/pages/home_page.dart';
+import 'ai_page.dart';
 import 'profile_page.dart';
 
 class TabPage extends StatefulWidget {
@@ -18,10 +19,8 @@ class _TabPageState extends State<TabPage> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final imageSize = MediaQuery.of(context).size.width / 3;
 
     return Scaffold(
@@ -49,15 +48,11 @@ class _TabPageState extends State<TabPage> {
             body: TabBarView(
               children: [
                 HomePage(),
-                Text('채팅 스크린'),
+                AIPage(),
                 ProfilePage(),
               ],
             ),
-          )
-      ),
-
+          )),
     );
   }
-
-
 }

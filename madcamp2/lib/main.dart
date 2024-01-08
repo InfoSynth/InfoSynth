@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:madcamp2/pages/edit_info_page.dart';
 
 import 'pages/home_page.dart';
@@ -11,6 +12,7 @@ import 'pages/tab_page.dart';
 // Widget _defaultHome = ChatScreen();
 
 void main() async {
+  await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
