@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:madcamp2/pages/edit_info_page.dart';
+
+import 'pages/home_page.dart';
+import 'pages/login_page.dart';
+import 'pages/profile_page.dart';
+import 'pages/register_page.dart';
 // import 'package:madcamp2/pages/chat_page.dart';
 
 import 'pages/tab_page.dart';
-import 'pages/login_page.dart';
-import 'pages/register_page.dart';
-import 'pages/profile_page.dart';
-import 'pages/home_page.dart';
-
-
 
 // Widget _defaultHome = const LoginPage();
 // Widget _defaultHome = ChatScreen();
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
         '/profile': (context) => const ProfilePage(),
+        '/edit': (context) => const EditInfoPage(),
       },
-
     );
   }
 }
