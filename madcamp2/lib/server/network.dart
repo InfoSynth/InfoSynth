@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import '../utils/user.dart';
 
 class Network {
-  final baseUrl = "http://3.37.132.122:8000";
+  final baseUrl = "http://3.37.132.122:8000/api/users";
 
   // final baseUrl = "http://localhost:8000/api/users";
 
@@ -25,7 +25,7 @@ class Network {
   }
 
   // 회원가입 또는 멤버 추가
-  Future<Map> addMember(Map<String, String> newMember) async {
+  Future<dynamic> addMember(Map<String, String> newMember) async {
     var url = Uri.parse(baseUrl + '/');
 
     try {
@@ -34,12 +34,13 @@ class Network {
         body: jsonEncode(newMember),
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer ${User.current.token}"
         },
       );
       return jsonDecode(response.body);
     } catch (e) {
       print(e);
+      print("실패!!!!!!!!");
+
       return {};
     }
   }

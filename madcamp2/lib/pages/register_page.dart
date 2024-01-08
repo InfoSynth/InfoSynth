@@ -289,7 +289,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 () async {
                   if (validateAndSave()) {
                     Map<String, String> newmember = {};
-                    newmember['username'] = username!;
+                    newmember['name'] = username!;
                     newmember['email'] = email!;
                     newmember['password'] = password!;
                     newmember['birth'] = birth!;
@@ -299,16 +299,30 @@ class _RegisterPageState extends State<RegisterPage> {
                       gender_ = "0";
                     }
                     newmember['gender'] = gender_!;
-                    network.addMember(newmember);
-                    FormHelper.showSimpleAlertDialog(
-                      context,
-                      "app_name",
-                      "회원가입 성공 !!",
-                      "OK",
-                      () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                    );
+                    var success = await network.addMember(newmember);
+                    if(success['success']==1){
+                      FormHelper.showSimpleAlertDialog(
+                        context,
+                        "app_name",
+                        "회원가입 성공 !!",
+                        "OK",
+                            () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                      );
+                    }
+                    else{
+                      FormHelper.showSimpleAlertDialog(
+                        context,
+                        "app_name",
+                        "회원가입 실패 !!",
+                        "OK",
+                            () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                      );
+                    }
+
                   }
                 },
                 btnColor: HexColor("#283B71"),
