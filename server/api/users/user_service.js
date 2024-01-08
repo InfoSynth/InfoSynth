@@ -4,9 +4,6 @@ const con = require("../../database");
 
 module.exports = {
   create: (data, callBack) => {
-    console.log("controller");
-    console.log(data);
-
     var name = data.name;
     var birth = data.birth;
     var gender = data.gender;
@@ -19,8 +16,6 @@ module.exports = {
         if (error) {
           return callBack(error);
         }
-        console.log("no error in service");
-        console.log(results);
         return callBack(null, results);
       }
     );
@@ -60,11 +55,11 @@ module.exports = {
     );
   },
   updateUser: (data, callBack) => {
-    var id = data.id;
+    var email = data.email;
     var updatedData = data;
     con.query(
-      "UPDATE users SET ? WHERE id = ?",
-      [updatedData, id],
+      "UPDATE users SET ? WHERE email = ?",
+      [updatedData, email],
       (error, results, fields) => {
         if (error) {
           return callBack(error);

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
+import 'package:intl/intl.dart';
 import '../server/network.dart';
+import '../utils/user.dart';
 
 enum genderType { male, female }
 
@@ -14,11 +16,12 @@ class EditInfoPage extends StatefulWidget {
 }
 
 class _EditInfoPageState extends State<EditInfoPage> {
+  final TextEditingController emailController = TextEditingController(text: "initial@example.com");
   bool isAPIcallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  String? username;
 
+  String? username;
   // DateTime? birth = DateTime(0, 0, 0);
   String? birth = "생년월일을 선택해주세요.";
   genderType? gender;
@@ -28,6 +31,33 @@ class _EditInfoPageState extends State<EditInfoPage> {
   String? password;
 
   Network network = Network();
+
+  @override
+  void initState() {
+    super.initState();
+    getDbData();
+  }
+  getDbData() async {
+    Network network = Network();
+    Map<String, String> check = {
+      "email": User.current.email,
+    };
+    var checked_data = await network.checkMemberByEmail(check);
+
+    DateTime date = DateTime.parse(checked_data['birth']);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    var gen = "남자";
+    if(checked_data['gender'].toString()==1){
+      gen = "여자";
+    }
+    setState(() {
+      username = checked_data['name'];
+      birth = formattedDate;
+      gender_ = checked_data['gender'].toString();
+      genderOnly = gen;
+      email = checked_data['email'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +98,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
               ),
             ),
             FormHelper.inputFieldWidget(
+              initialValue: username.toString(),
               context,
               "username",
               "이름(닉네임)",
@@ -75,7 +106,6 @@ class _EditInfoPageState extends State<EditInfoPage> {
                 if (onValidateVal.isEmpty) {
                   return 'Username can\'t be empty.';
                 }
-
                 return null;
               },
               (onSavedVal) {
@@ -93,6 +123,8 @@ class _EditInfoPageState extends State<EditInfoPage> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: FormHelper.inputFieldWidget(
+                isReadonly : true,
+                initialValue: email.toString(),
                 context,
                 "email",
                 "이메일",
@@ -220,7 +252,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 25.0),
                         child: Text(
-                          "$genderOnly",
+                          genderOnly.toString(),
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ),
@@ -241,10 +273,9 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         onChanged: (selectedGender) {
                           // Handle value change
                           setState(() {
-                            gender = selectedGender as genderType?;
-                            if (gender.toString().contains("female")) {
+                            if (selectedGender==genderType.female) {
                               genderOnly = "여자";
-                            } else if (gender.toString().contains("male")) {
+                            } else if (selectedGender==genderType.male) {
                               genderOnly = "남자";
                             } else {
                               genderOnly = "성별";
@@ -262,7 +293,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
             ),
             Center(
               child: FormHelper.submitButton(
-                "회원가입",
+                "정보수정",
                 () async {
                   if (validateAndSave()) {
                     Map<String, String> newmember = {};
@@ -276,15 +307,15 @@ class _EditInfoPageState extends State<EditInfoPage> {
                       gender_ = "0";
                     }
                     newmember['gender'] = gender_!;
-                    var success = await network.addMember(newmember);
+                    var success = await network.updateMember(newmember);
                     if (success['success'] == 1) {
                       FormHelper.showSimpleAlertDialog(
                         context,
                         "app_name",
-                        "회원가입 성공 !!",
+                        "정보변경 성공 !!",
                         "OK",
                         () {
-                          Navigator.pushNamed(context, '/login');
+                          Navigator.pushNamed(context, '/profile');
                         },
                       );
                     } else {
@@ -294,7 +325,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         "회원가입 실패 !!",
                         "OK",
                         () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.pushNamed(context, '/edit');
                         },
                       );
                     }
