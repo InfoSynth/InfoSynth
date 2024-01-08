@@ -3,6 +3,8 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
+import '../server/network.dart';
+
 enum genderType { male, female }
 
 class RegisterPage extends StatefulWidget {
@@ -21,8 +23,11 @@ class _RegisterPageState extends State<RegisterPage> {
   // DateTime? birth = DateTime(0, 0, 0);
   String? birth = "0000-00-00";
   genderType? gender;
+  String? gender_;
   String? email;
   String? password;
+
+  Network network = Network();
 
   @override
   Widget build(BuildContext context) {
@@ -281,7 +286,31 @@ class _RegisterPageState extends State<RegisterPage> {
             Center(
               child: FormHelper.submitButton(
                 "회원가입",
-                () {},
+                () async {
+                  if (validateAndSave()) {
+                    Map<String, String> newmember = {};
+                    newmember['username'] = username!;
+                    newmember['email'] = email!;
+                    newmember['password'] = password!;
+                    newmember['birth'] = birth!;
+                    if (gender.toString().contains("female")) {
+                      gender_ = "1";
+                    } else {
+                      gender_ = "0";
+                    }
+                    newmember['gender'] = gender_!;
+                    network.addMember(newmember);
+                    FormHelper.showSimpleAlertDialog(
+                      context,
+                      "app_name",
+                      "회원가입 성공 !!",
+                      "OK",
+                      () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                    );
+                  }
+                },
                 btnColor: HexColor("#283B71"),
                 borderColor: Colors.white,
                 txtColor: Colors.white,
@@ -309,5 +338,14 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     return null;
+  }
+
+  bool validateAndSave() {
+    final form = globalFormKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 }

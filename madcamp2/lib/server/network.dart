@@ -1,10 +1,13 @@
 import 'dart:convert';
+
 import 'package:http/http.dart';
+
 import '../utils/user.dart';
 
 class Network {
-  // final baseUrl = "http://3.37.132.122:8000";
-  final baseUrl = "http://localhost:8000/api/users";
+  final baseUrl = "http://3.37.132.122:8000";
+
+  // final baseUrl = "http://localhost:8000/api/users";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
@@ -12,8 +15,8 @@ class Network {
     final response = await get(
       url,
       headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer ${User.current.token}"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${User.current.token}"
       },
     );
     var userJson = response.body;
@@ -42,7 +45,7 @@ class Network {
   }
 
   Future<Map> getMember(String id) async {
-    var url = Uri.parse(baseUrl + '/'+ id);
+    var url = Uri.parse(baseUrl + '/' + id);
     try {
       final response = await get(
         url,
@@ -59,8 +62,9 @@ class Network {
       return {};
     }
   }
+
   Future<Map> checkMemberByEmail(Map<String, String> checkMember) async {
-    var url = Uri.parse(baseUrl + '/'+ checkMember['email'].toString());
+    var url = Uri.parse(baseUrl + '/' + checkMember['email'].toString());
     try {
       final response = await get(
         url,
@@ -77,10 +81,11 @@ class Network {
       return {};
     }
   }
+
   Future<Map> updateMember(Map<String, String> updateMember) async {
     var url = Uri.parse(baseUrl + '/');
     try {
-      final response = await  put(
+      final response = await put(
         url,
         body: jsonEncode(updateMember),
         headers: {
@@ -105,14 +110,12 @@ class Network {
       );
       var userJson = response.body;
       var jsonResponse = jsonDecode(userJson);
-      User.initialize('1', checkMember['email']!, 'name', jsonResponse["token"]);
+      User.initialize(
+          '1', checkMember['email']!, 'name', jsonResponse["token"]);
       return jsonResponse;
     } catch (e) {
-      print(["error",e]);
+      print(["error", e]);
       return {};
     }
   }
-
-
-
 }
