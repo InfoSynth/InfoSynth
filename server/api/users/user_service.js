@@ -4,12 +4,13 @@ const con = require("../../database");
 
 module.exports = {
   create: (data, callBack) => {
-    var id = data.body.id;
-    var name = data.body.name;
-    var birth = data.body.birth;
-    var gender = data.body.gender;
-    var email = data.body.email;
-    var password = data.body.password;
+    // var id = data.body.id;
+    // console.log(data);
+    var name = data.name;
+    var birth = data.birth;
+    var gender = data.gender;
+    var email = data.email;
+    var password = data.password;
     con.query(
       "INSERT INTO users (name, birth, gender, email, password) VALUES(?,?,?,?,?)",
       [name, birth, gender, email, password],
@@ -56,8 +57,8 @@ module.exports = {
     );
   },
   updateUser: (data, callBack) => {
-    var id = data.body.id;
-    var updatedData = data.body;
+    var id = data.id;
+    var updatedData = data;
     con.query(
       "UPDATE users SET ? WHERE id = ?",
       [updatedData, id],
