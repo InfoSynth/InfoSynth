@@ -6,8 +6,9 @@ import 'package:http/http.dart';
 import '../utils/user.dart';
 
 class Network {
-  // final baseUrl = "http://3.37.132.122:8000/api/users";
-  final baseUrl = "http://localhost:8000/api/users";
+  final baseUrl = "http://3.37.132.122:8000/api/users";
+
+  // final baseUrl = "http://localhost:8000/api/users";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
@@ -128,7 +129,6 @@ class Network {
       dio.options.maxRedirects.isFinite;
       dio.options.headers = {"Authorization": "Bearer ${User.current.token}"};
 
-
       var response = await dio.patch(
         baseUrl + '/users/backgroundimage',
         data: input,
@@ -139,14 +139,34 @@ class Network {
       print(e);
     }
   }
+
   Future<Map> getNews() async {
     var url = Uri.parse(baseUrl + '/news');
     try {
       final response = await get(
         url,
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
+
+  // keyword string 3개 보내기
+  Future<Map> sendKeyword(List<String> words) async {
+    var url = Uri.parse(baseUrl + '/news/search');
+
+    String jsonString = words.join(' ');
+
+    try {
+      final response = await post(
+        url,
+        body: jsonEncode({"words": jsonString}),
+        headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;
       var parsingData = jsonDecode(userJson);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:madcamp2/server/network.dart';
-import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,26 +11,35 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   Network network = Network();
-  // List<Map> newList = List<>();
+
+  List<dynamic> newList = [];
+
   @override
   void initState() {
     super.initState();
     getNews();
   }
 
-
   getNews() async {
     var news = await network.getNews();
     setState(() {
-      // newList = news['data'];
+      newList = news['data'];
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text('홈 스크린'),
+    return ListView.separated(
+      padding: const EdgeInsets.all(8),
+      itemCount: newList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          height: 50,
+          color: Colors.white,
+          child: Center(child: Text('${newList[index]['title']}')),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
-
 }
