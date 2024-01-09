@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:madcamp2/models/response_model.dart';
 import 'package:madcamp2/server/network.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AIPage extends StatefulWidget {
   const AIPage({super.key});
@@ -47,10 +48,20 @@ class _AIPageState extends State<AIPage> {
               padding: const EdgeInsets.all(8),
               itemCount: newsList.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 50,
-                  color: Colors.white,
-                  child: Center(child: Text('${newsList[index]['title']}')),
+                // Use GestureDetector or InkWell for tap functionality
+                return GestureDetector(
+                  onTap: () {
+                    // Handle tap action here, for example, open a link
+                    String link = newsList[index]['link'];
+                    // Navigate to the link or perform other actions
+                    // print("Opening link: $link");
+                    launch('$link', forceSafariVC: true);
+                  },
+                  child: Container(
+                    height: 50,
+                    color: Colors.white,
+                    child: Center(child: Text('${newsList[index]['title']}')),
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>
@@ -59,7 +70,9 @@ class _AIPageState extends State<AIPage> {
           ),
           Expanded(child: PromptBldr(responseTxt: responseTxt)),
           TextFormFieldBldr(
-              promptController: promptController, btnFun: completionFun),
+            promptController: promptController,
+            btnFun: completionFun,
+          ),
         ],
       ),
     );
