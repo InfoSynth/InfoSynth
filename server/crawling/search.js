@@ -8,7 +8,7 @@ const getSearchHtml = async (key) => {
     "https://search.naver.com/search.naver?where=news&sm=tab_tnw&query=" +
     key +
     "&sort=0&photo=0&field=0&pd=0&ds=&de=&mynews=0&office_type=0&office_section_code=0&news_office_checked=&related=1&nso=so:r,p:all,a:all";
-  console.log(url);
+  // console.log(url);
   const articles = [];
   try {
     for (var i = 1; i <= 8; i++) {
@@ -22,11 +22,14 @@ const getSearchHtml = async (key) => {
         "#sp_nws" + i + " > div > div > div.news_contents > a.news_tit"
       );
       if (bodyList.text() != "") {
-        console.log(bodyList.text());
-        articles.push(bodyList.text());
+        // console.log(bodyList.text());
+        // console.log(bodyList.attr("href"));
+        var title = bodyList.text();
+        var link = bodyList.attr("href");
+        articles.push({ title, link });
       }
     }
-    console.log("ended" + articles);
+    console.log(articles);
     return articles;
   } catch (error) {
     console.log(articles);
@@ -35,6 +38,6 @@ const getSearchHtml = async (key) => {
   }
 };
 
-// getSearchHtml("인공지능");
+getSearchHtml("카이스트");
 
 module.exports = { getSearchHtml };
