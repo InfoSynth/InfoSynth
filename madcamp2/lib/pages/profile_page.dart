@@ -36,13 +36,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final double coverHeight = 280;
   final double profileHeight = 144;
 
-<<<<<<< HEAD
   XFile? background_image; //이미지를 담을 변수 선언
   XFile? profile_image; //이미지를 담을 변수 선언
 
   final ImagePicker picker = ImagePicker(); //ImagePicker 초기화
-
-
 
   Future getImageBackground(ImageSource imageSource) async {
     final XFile? pickedFile = await picker.pickImage(
@@ -65,7 +62,10 @@ class _ProfilePageState extends State<ProfilePage> {
     if (pickedFile != null) {
       setState(() {
         profile_image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
-=======
+      });
+    }
+  }
+
   XFile? _imageBack; //이미지를 담을 변수 선언
   XFile? _imageProfile; //이미지를 담을 변수 선언
   final ImagePicker picker1 = ImagePicker(); //ImagePicker 초기화
@@ -80,15 +80,14 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future getImageProfile(ImageSource imageSource) async {
-    final XFile? pickedFile = await picker2.pickImage(source: imageSource);
-    if (pickedFile != null) {
-      setState(() {
-        _imageProfile = XFile(pickedFile.path); //가져온 이미지를 _imageProfile에 저장
->>>>>>> c0c993bbb8ce6be1f8f55a4cfc0e67c88870685b
-      });
-    }
-  }
+  // Future getImageProfile(ImageSource imageSource) async {
+  //   final XFile? pickedFile = await picker2.pickImage(source: imageSource);
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _imageProfile = XFile(pickedFile.path); //가져온 이미지를 _imageProfile에 저장
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
@@ -141,19 +140,15 @@ class _ProfilePageState extends State<ProfilePage> {
           buildBottom(),
           SizedBox(height: 30),
           buildEditButton(),
-<<<<<<< HEAD
           _buildButtonBackground(),
           _buildButtonProfile(),
           _buildPhotoArea(),
 
-=======
->>>>>>> c0c993bbb8ce6be1f8f55a4cfc0e67c88870685b
         ],
       ),
     );
   }
 
-<<<<<<< HEAD
 
   Widget _buildPhotoArea() {
     return background_image != null
@@ -166,8 +161,8 @@ class _ProfilePageState extends State<ProfilePage> {
       width: 300,
       height: 300,
       color: Colors.grey,
-    )
-  };
+    );
+  }
 
   Widget buildImageButtonBack() {
     return Row(
@@ -273,7 +268,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ],
     );
   }
-
 
   Widget _buildButtonBackground() {
     return Row(
