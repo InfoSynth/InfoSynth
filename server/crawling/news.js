@@ -3,6 +3,7 @@ const cheerio = require("cheerio");
 const iconv = require("iconv-lite");
 
 const getNewsHtml = async () => {
+  console.log("getNewsHtml started");
   try {
     const articles = [];
     const urls = [

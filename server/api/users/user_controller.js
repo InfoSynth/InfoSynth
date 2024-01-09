@@ -162,7 +162,8 @@ module.exports = {
     });
   },
   getNewsSearch: async (req, res) => {
-    var art = await getNewsHtml(req.body.keyword);
+    console.log("controller started");
+    var art = await getSearchHtml(req.body.keyword);
     console.log("Articles:", art);
     return res.json({
       success: 1,
