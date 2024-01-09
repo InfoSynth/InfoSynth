@@ -139,14 +139,13 @@ class Network {
       print(e);
     }
   }
-  Future<Map> getNews(String id) async {
+  Future<Map> getNews() async {
     var url = Uri.parse(baseUrl + '/news');
     try {
       final response = await get(
         url,
         headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer ${User.current.token}"
+          "Content-Type": "application/json"
         },
       );
       var userJson = response.body;

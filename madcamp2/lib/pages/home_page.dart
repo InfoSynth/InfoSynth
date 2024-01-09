@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madcamp2/server/network.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,7 +11,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-
+  Network network = Network();
+  // List<Map> newList = List<>();
   @override
   void initState() {
     super.initState();
@@ -19,7 +21,10 @@ class _HomePageState extends State<HomePage> {
 
 
   getNews() async {
-
+    var news = await network.getNews();
+    setState(() {
+      // newList = news['data'];
+    });
   }
 
   @override
@@ -28,6 +33,5 @@ class _HomePageState extends State<HomePage> {
       body: Text('홈 스크린'),
     );
   }
-
 
 }
