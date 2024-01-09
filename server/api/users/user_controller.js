@@ -1,14 +1,3 @@
-const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "images/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
-const upload = multer({ storage: storage });
-
 const {
   create,
   // getUserByUserID,
@@ -16,6 +5,7 @@ const {
   updateUser,
   getUserByUserEmail,
 } = require("./user_service.js");
+const { getNewsHtml } = require("../../crawling/news.js");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 
@@ -141,10 +131,24 @@ module.exports = {
     });
   },
   updateUserBackground: (req, res) => {
-    const image_data = req.body.data;
+    // const image_data = req.body.data;
+    console.log("controller");
+    upload.single("image"),
+      res.json({
+        success: 1,
+        message: "updated successfully",
+      });
   },
   updateUserProfile: (req, res) => {
-    const body = req.body.data;
-    console.log(body);
+    // const image_data = req.body.data;
+    // console.log(image_data);
+  },
+  getNews: async (req, res) => {
+    var art = await getNewsHtml();
+    console.log("Articles:", art);
+    return res.json({
+      success: 1,
+      data: art,
+    });
   },
 };

@@ -6,8 +6,8 @@ import 'package:http/http.dart';
 import '../utils/user.dart';
 
 class Network {
-  final baseUrl = "http://3.37.132.122:8000/api/users";
-  // final baseUrl = "http://localhost:8000/api/users";
+  // final baseUrl = "http://3.37.132.122:8000/api/users";
+  final baseUrl = "http://localhost:8000/api/users";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
@@ -126,17 +126,35 @@ class Network {
     try {
       dio.options.contentType = 'multipart/form-data';
       dio.options.maxRedirects.isFinite;
-      dio.options.headers = {'token': User.current.token };
+      dio.options.headers = {"Authorization": "Bearer ${User.current.token}"};
+
 
       var response = await dio.patch(
         baseUrl + '/users/backgroundimage',
         data: input,
       );
-
       print('성공적으로 업로드했습니다');
       return response.data;
     } catch (e) {
       print(e);
+    }
+  }
+  Future<Map> getNews(String id) async {
+    var url = Uri.parse(baseUrl + '/news');
+    try {
+      final response = await get(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${User.current.token}"
+        },
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
+      return {};
     }
   }
 }

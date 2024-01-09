@@ -14,8 +14,13 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    getNews();
   }
 
+
+  getData() async {
+
+  }
 
   @override
   Widget build(BuildContext context) {

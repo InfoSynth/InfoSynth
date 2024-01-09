@@ -8,8 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:madcamp2/server/network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utils/user.dart';
-
 enum genderType { male, female }
 
 class ProfilePage extends StatefulWidget {
@@ -26,8 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
   late String userEmail = '';
   late String userPassword = '';
 
-  Network network = Network();
-
   bool isAPIcallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
@@ -36,40 +32,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final double coverHeight = 280;
   final double profileHeight = 144;
 
-  XFile? background_image; //이미지를 담을 변수 선언
-  XFile? profile_image; //이미지를 담을 변수 선언
-
-  final ImagePicker picker = ImagePicker(); //ImagePicker 초기화
-
-  Future getImageBackground(ImageSource imageSource) async {
-    final XFile? pickedFile = await picker.pickImage(
-        source: imageSource,
-        imageQuality: 30,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        background_image = pickedFile!; //가져온 이미지를 _image에 저장
-      });
-      var formData = await FormData.fromMap({'background_image': await MultipartFile.fromFile(pickedFile.path)});
-      await network.patchUserBackGroundImage(formData);
-    }
-  }
-  Future getImageProfile(ImageSource imageSource) async {
-    final XFile? pickedFile = await picker.pickImage(
-      source: imageSource,
-      imageQuality: 30,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        profile_image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
-      });
-    }
-  }
-
   XFile? _imageBack; //이미지를 담을 변수 선언
   XFile? _imageProfile; //이미지를 담을 변수 선언
   final ImagePicker picker1 = ImagePicker(); //ImagePicker 초기화
   final ImagePicker picker2 = ImagePicker(); //ImagePicker 초기화
+  Network network = Network();
 
   Future getImageBack(ImageSource imageSource) async {
     final XFile? pickedFile = await picker1.pickImage(source: imageSource);
@@ -77,17 +44,19 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         _imageBack = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
+      var formData = FormData.fromMap({'image': await MultipartFile.fromFile(pickedFile.path)});
+      network.patchUserBackGroundImage(formData);
     }
   }
 
-  // Future getImageProfile(ImageSource imageSource) async {
-  //   final XFile? pickedFile = await picker2.pickImage(source: imageSource);
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       _imageProfile = XFile(pickedFile.path); //가져온 이미지를 _imageProfile에 저장
-  //     });
-  //   }
-  // }
+  Future getImageProfile(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker2.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _imageProfile = XFile(pickedFile.path); //가져온 이미지를 _imageProfile에 저장
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -140,27 +109,8 @@ class _ProfilePageState extends State<ProfilePage> {
           buildBottom(),
           SizedBox(height: 30),
           buildEditButton(),
-          _buildButtonBackground(),
-          _buildButtonProfile(),
-          _buildPhotoArea(),
-
         ],
       ),
-    );
-  }
-
-
-  Widget _buildPhotoArea() {
-    return background_image != null
-        ? Container(
-      width: 30,
-      height: 30,
-      child: Image.file(File(background_image!.path)), //가져온 이미지를 화면에 띄워주는 코드
-    )
-        : Container(
-      width: 300,
-      height: 300,
-      color: Colors.grey,
     );
   }
 
@@ -265,49 +215,7 @@ class _ProfilePageState extends State<ProfilePage> {
         Positioned(bottom: bottom + 5, right: 5, child: buildImageButtonBack()),
         Positioned(top: top, child: buildProfileImage()),
         Positioned(
-            top: top + profileHeight - 10, child: buildImageButtonProfile()),
-      ],
-    );
-  }
-
-  Widget _buildButtonBackground() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-
-          onPressed: () {
-            getImageBackground(ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
-          },
-          child: Text("카메라"),
-        ),
-        SizedBox( width: 30 ),
-        ElevatedButton(
-          onPressed: () {
-            getImageBackground(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
-          },
-          child: Text("갤러리"),
-        ),
-      ],
-    );
-  }
-  Widget _buildButtonProfile() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            getImageProfile(ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
-          },
-          child: Text("카메라"),
-        ),
-        SizedBox(width: 30),
-        ElevatedButton(
-          onPressed: () {
-            getImageProfile(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
-          },
-          child: Text("갤러리"),
-        ),
+            top: top + profileHeight-50, child: buildImageButtonProfile()),
       ],
     );
   }
@@ -317,13 +225,13 @@ class _ProfilePageState extends State<ProfilePage> {
       color: Colors.grey,
       child: _imageBack != null
           ? Image.file(File(_imageBack!.path),
-              width: double.infinity, height: coverHeight, fit: BoxFit.cover)
+          width: double.infinity, height: coverHeight, fit: BoxFit.cover)
           : Image.network(
-              "https://source.unsplash.com/random",
-              width: double.infinity,
-              height: coverHeight,
-              fit: BoxFit.cover,
-            ),
+        "https://source.unsplash.com/random",
+        width: double.infinity,
+        height: coverHeight,
+        fit: BoxFit.cover,
+      ),
     );
   }
 
