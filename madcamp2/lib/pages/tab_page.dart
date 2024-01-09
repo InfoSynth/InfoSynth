@@ -5,19 +5,24 @@ import 'ai_page.dart';
 import 'profile_page.dart';
 
 class TabPage extends StatefulWidget {
-  const TabPage({super.key});
+  final int initialTabIndex;
+
+  const TabPage({super.key, this.initialTabIndex = 0});
 
   @override
   State<TabPage> createState() => _TabPageState();
 }
 
-class _TabPageState extends State<TabPage> {
+class _TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? username;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(
+        initialIndex: widget.initialTabIndex, length: 3, vsync: this);
   }
 
   @override
@@ -32,7 +37,7 @@ class _TabPageState extends State<TabPage> {
       body: DefaultTabController(
           length: 3,
           child: Scaffold(
-            bottomNavigationBar: TabBar(tabs: [
+            bottomNavigationBar: TabBar(controller: _tabController, tabs: [
               Tab(
                 icon: Icon(Icons.home),
                 text: 'home',
@@ -47,6 +52,7 @@ class _TabPageState extends State<TabPage> {
               )
             ]),
             body: TabBarView(
+              controller: _tabController,
               children: [
                 HomePage(),
                 AIPage(),
