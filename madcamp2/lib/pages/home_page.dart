@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 
-  getData() async {
+  getNews() async {
 
   }
 

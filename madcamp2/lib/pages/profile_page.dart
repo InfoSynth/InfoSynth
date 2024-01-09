@@ -44,7 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         _imageBack = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
-      var formData = FormData.fromMap({'image': await MultipartFile.fromFile(pickedFile.path)});
+      var formData = FormData.fromMap(
+          {'image': await MultipartFile.fromFile(pickedFile.path)});
       network.patchUserBackGroundImage(formData);
     }
   }
@@ -104,7 +105,6 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           buildTop(),
-          SizedBox(height: 20),
           buildCenter(),
           buildBottom(),
           SizedBox(height: 30),
@@ -209,13 +209,13 @@ class _ProfilePageState extends State<ProfilePage> {
       alignment: Alignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: bottom),
+          margin: EdgeInsets.only(bottom: bottom + 15),
           child: buildCoverImage(),
         ),
-        Positioned(bottom: bottom + 5, right: 5, child: buildImageButtonBack()),
-        Positioned(top: top, child: buildProfileImage()),
         Positioned(
-            top: top + profileHeight-50, child: buildImageButtonProfile()),
+            bottom: bottom + 20, right: 5, child: buildImageButtonBack()),
+        Positioned(top: top, child: buildProfileImage()),
+        Positioned(bottom: 0, child: buildImageButtonProfile()),
       ],
     );
   }
@@ -225,13 +225,13 @@ class _ProfilePageState extends State<ProfilePage> {
       color: Colors.grey,
       child: _imageBack != null
           ? Image.file(File(_imageBack!.path),
-          width: double.infinity, height: coverHeight, fit: BoxFit.cover)
+              width: double.infinity, height: coverHeight, fit: BoxFit.cover)
           : Image.network(
-        "https://source.unsplash.com/random",
-        width: double.infinity,
-        height: coverHeight,
-        fit: BoxFit.cover,
-      ),
+              "https://source.unsplash.com/random",
+              width: double.infinity,
+              height: coverHeight,
+              fit: BoxFit.cover,
+            ),
     );
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:madcamp2/pages/tab_page.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
-import 'package:intl/intl.dart';
 import '../server/network.dart';
 import '../utils/user.dart';
 
@@ -16,12 +17,14 @@ class EditInfoPage extends StatefulWidget {
 }
 
 class _EditInfoPageState extends State<EditInfoPage> {
-  final TextEditingController emailController = TextEditingController(text: "initial@example.com");
+  final TextEditingController emailController =
+      TextEditingController(text: "initial@example.com");
   bool isAPIcallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
 
   String? username;
+
   // DateTime? birth = DateTime(0, 0, 0);
   String? birth = "생년월일을 선택해주세요.";
   genderType? gender;
@@ -37,6 +40,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
     super.initState();
     getDbData();
   }
+
   getDbData() async {
     Network network = Network();
     Map<String, String> check = {
@@ -47,7 +51,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
     DateTime date = DateTime.parse(checked_data['birth']);
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     var gen = "남자";
-    if(checked_data['gender'].toString()==1){
+    if (checked_data['gender'].toString() == 1) {
       gen = "여자";
     }
     setState(() {
@@ -123,7 +127,7 @@ class _EditInfoPageState extends State<EditInfoPage> {
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: FormHelper.inputFieldWidget(
-                isReadonly : true,
+                isReadonly: true,
                 initialValue: email.toString(),
                 context,
                 "email",
@@ -157,6 +161,10 @@ class _EditInfoPageState extends State<EditInfoPage> {
                 (onValidateVal) {
                   if (onValidateVal.isEmpty) {
                     return '비밀번호를 입력해주세요.';
+                  }
+
+                  if (validatePassword(onValidateVal) != null) {
+                    return validatePassword(onValidateVal);
                   }
 
                   return null;
@@ -273,9 +281,9 @@ class _EditInfoPageState extends State<EditInfoPage> {
                         onChanged: (selectedGender) {
                           // Handle value change
                           setState(() {
-                            if (selectedGender==genderType.female) {
+                            if (selectedGender == genderType.female) {
                               genderOnly = "여자";
-                            } else if (selectedGender==genderType.male) {
+                            } else if (selectedGender == genderType.male) {
                               genderOnly = "남자";
                             } else {
                               genderOnly = "성별";
@@ -310,19 +318,19 @@ class _EditInfoPageState extends State<EditInfoPage> {
                     var success = await network.updateMember(newmember);
                     if (success['success'] == 1) {
                       FormHelper.showSimpleAlertDialog(
-                        context,
-                        "app_name",
-                        "정보변경 성공 !!",
-                        "OK",
-                        () {
-                          Navigator.pushNamed(context, '/profile');
-                        },
-                      );
+                          context, "app_name", "정보변경 성공 !!", "OK", () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TabPage(initialTabIndex: 2),
+                          ),
+                        );
+                      });
                     } else {
                       FormHelper.showSimpleAlertDialog(
                         context,
                         "app_name",
-                        "회원가입 실패 !!",
+                        "정보변경 실패 !!",
                         "OK",
                         () {
                           Navigator.pushNamed(context, '/edit');
@@ -367,5 +375,17 @@ class _EditInfoPageState extends State<EditInfoPage> {
       return true;
     }
     return false;
+  }
+
+  // 비밀번호 형식 확인 함수
+  String? validatePassword(String value) {
+    // 비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 함
+    String pattern =
+        r'^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}|:;<>,.?/~]).{8,}$';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
+    }
+    return null;
   }
 }
