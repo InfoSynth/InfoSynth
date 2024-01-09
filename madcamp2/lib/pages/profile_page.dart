@@ -210,7 +210,8 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         Positioned(bottom: bottom + 5, right: 5, child: buildImageButtonBack()),
         Positioned(top: top, child: buildProfileImage()),
-        Positioned(top: top + profileHeight, child: buildImageButtonProfile()),
+        Positioned(
+            top: top + profileHeight - 10, child: buildImageButtonProfile()),
       ],
     );
   }
