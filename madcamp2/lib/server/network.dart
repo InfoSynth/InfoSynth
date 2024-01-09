@@ -146,8 +146,6 @@ class Network {
       final response = await get(
         url,
         headers: {"Content-Type": "application/json"},
-
-        headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;
       var parsingData = jsonDecode(userJson);
