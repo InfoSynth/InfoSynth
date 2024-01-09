@@ -165,7 +165,7 @@ class Network {
     try {
       final response = await post(
         url,
-        body: jsonEncode({"words": jsonString}),
+        body: jsonEncode({"keyword": jsonString}),
         headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;
