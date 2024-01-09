@@ -1,13 +1,13 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart';
 
 import '../utils/user.dart';
 
 class Network {
-  final baseUrl = "http://3.37.132.122:8000/api/users";
-
-  // final baseUrl = "http://localhost:8000/api/users";
+  // final baseUrl = "http://3.37.132.122:8000/api/users";
+  final baseUrl = "http://localhost:8000/api/users";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
@@ -116,6 +116,43 @@ class Network {
       return jsonResponse;
     } catch (e) {
       print(["error", e]);
+      return {};
+    }
+  }
+
+  Future<dynamic> patchUserBackGroundImage(dynamic input) async {
+    print("프로필 사진을 서버에 업로드 합니다.");
+    var dio = new Dio();
+    try {
+      dio.options.contentType = 'multipart/form-data';
+      dio.options.maxRedirects.isFinite;
+      dio.options.headers = {"Authorization": "Bearer ${User.current.token}"};
+
+
+      var response = await dio.patch(
+        baseUrl + '/users/backgroundimage',
+        data: input,
+      );
+      print('성공적으로 업로드했습니다');
+      return response.data;
+    } catch (e) {
+      print(e);
+    }
+  }
+  Future<Map> getNews() async {
+    var url = Uri.parse(baseUrl + '/news');
+    try {
+      final response = await get(
+        url,
+        headers: {
+          "Content-Type": "application/json"
+        },
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
       return {};
     }
   }

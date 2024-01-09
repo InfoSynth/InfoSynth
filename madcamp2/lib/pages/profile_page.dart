@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   XFile? _imageProfile; //이미지를 담을 변수 선언
   final ImagePicker picker1 = ImagePicker(); //ImagePicker 초기화
   final ImagePicker picker2 = ImagePicker(); //ImagePicker 초기화
+  Network network = Network();
 
   Future getImageBack(ImageSource imageSource) async {
     final XFile? pickedFile = await picker1.pickImage(source: imageSource);
@@ -42,6 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         _imageBack = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
+      var formData = FormData.fromMap(
+          {'image': await MultipartFile.fromFile(pickedFile.path)});
+      network.patchUserBackGroundImage(formData);
     }
   }
 

@@ -5,6 +5,7 @@ const {
   updateUser,
   getUserByUserEmail,
 } = require("./user_service.js");
+const { getNewsHtml } = require("../../crawling/news.js");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 
@@ -127,6 +128,27 @@ module.exports = {
           message: "Invalid Password",
         });
       }
+    });
+  },
+  updateUserBackground: (req, res) => {
+    // const image_data = req.body.data;
+    console.log("controller");
+    upload.single("image"),
+      res.json({
+        success: 1,
+        message: "updated successfully",
+      });
+  },
+  updateUserProfile: (req, res) => {
+    // const image_data = req.body.data;
+    // console.log(image_data);
+  },
+  getNews: async (req, res) => {
+    var art = await getNewsHtml();
+    console.log("Articles:", art);
+    return res.json({
+      success: 1,
+      data: art,
     });
   },
 };
