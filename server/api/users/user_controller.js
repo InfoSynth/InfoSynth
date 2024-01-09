@@ -6,6 +6,8 @@ const {
   getUserByUserEmail,
 } = require("./user_service.js");
 const { getNewsHtml } = require("../../crawling/news.js");
+const { getSearchHtml } = require("../../crawling/search.js");
+
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 
@@ -145,6 +147,22 @@ module.exports = {
   },
   getNews: async (req, res) => {
     var art = await getNewsHtml();
+    console.log("Articles:", art);
+    return res.json({
+      success: 1,
+      data: art,
+    });
+  },
+  getNews: async (req, res) => {
+    var art = await getNewsHtml();
+    console.log("Articles:", art);
+    return res.json({
+      success: 1,
+      data: art,
+    });
+  },
+  getNewsSearch: async (req, res) => {
+    var art = await getNewsHtml(req.body.keyword);
     console.log("Articles:", art);
     return res.json({
       success: 1,
