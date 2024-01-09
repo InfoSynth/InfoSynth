@@ -28,12 +28,12 @@ const getNewsHtml = async () => {
         const link = $(element).find("div.sh_text > a").attr("href");
         articles.push({ title, link });
       });
+    }
     return articles;
-
   } catch (error) {
     console.error(error);
     return {};
   }
 };
-module.exports = { getNewsHtml };
 
+module.exports = { getNewsHtml };
