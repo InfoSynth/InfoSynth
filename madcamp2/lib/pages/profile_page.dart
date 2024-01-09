@@ -100,7 +100,6 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           buildTop(),
-          SizedBox(height: 20),
           buildCenter(),
           buildBottom(),
           SizedBox(height: 30),
