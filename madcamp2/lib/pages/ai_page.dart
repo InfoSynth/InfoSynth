@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:madcamp2/models/response_model.dart';
+import 'package:madcamp2/server/network.dart';
 
 class AIPage extends StatefulWidget {
   const AIPage({super.key});
@@ -17,6 +18,8 @@ class _AIPageState extends State<AIPage> {
   String responseTxt =
       ''; // updated with the data which we get from the ai model
   late ResponseModel _responseModel;
+
+  Network network = Network();
 
   @override
   void initState() {
@@ -61,7 +64,9 @@ class _AIPageState extends State<AIPage> {
             },
             body: utf8.encode(jsonEncode({
               "model": "gpt-3.5-turbo-instruct",
-              "prompt": promptController.text,
+              "prompt":
+                  'read the following script and give only 3 important proper nouns in Korean. Just give me 3 words separated by commas.  ' +
+                      promptController.text,
               "max_tokens": 250,
               "temperature": 0,
               "top_p": 1,
@@ -102,6 +107,9 @@ class _AIPageState extends State<AIPage> {
         responseTxt = 'Error decoding response';
       });
     }
+
+    List<String> words = responseTxt.split(',');
+    network.sendKeyword(words);
   }
 }
 
