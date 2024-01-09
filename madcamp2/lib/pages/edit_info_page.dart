@@ -163,6 +163,10 @@ class _EditInfoPageState extends State<EditInfoPage> {
                     return '비밀번호를 입력해주세요.';
                   }
 
+                  if (validatePassword(onValidateVal) != null) {
+                    return validatePassword(onValidateVal);
+                  }
+
                   return null;
                 },
                 (onSavedVal) {
@@ -371,5 +375,17 @@ class _EditInfoPageState extends State<EditInfoPage> {
       return true;
     }
     return false;
+  }
+
+  // 비밀번호 형식 확인 함수
+  String? validatePassword(String value) {
+    // 비밀번호는 최소 8자 이상, 영문, 숫자, 특수문자를 포함해야 함
+    String pattern =
+        r'^(?=.*?[a-zA-Z])(?=.*?[0-9])(?=.*?[!@#$%^&*()_+{}|:;<>,.?/~]).{8,}$';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return '비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.';
+    }
+    return null;
   }
 }
