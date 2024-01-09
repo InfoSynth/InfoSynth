@@ -36,6 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final double coverHeight = 280;
   final double profileHeight = 144;
 
+<<<<<<< HEAD
   XFile? background_image; //이미지를 담을 변수 선언
   XFile? profile_image; //이미지를 담을 변수 선언
 
@@ -64,6 +65,27 @@ class _ProfilePageState extends State<ProfilePage> {
     if (pickedFile != null) {
       setState(() {
         profile_image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
+=======
+  XFile? _imageBack; //이미지를 담을 변수 선언
+  XFile? _imageProfile; //이미지를 담을 변수 선언
+  final ImagePicker picker1 = ImagePicker(); //ImagePicker 초기화
+  final ImagePicker picker2 = ImagePicker(); //ImagePicker 초기화
+
+  Future getImageBack(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker1.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _imageBack = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
+      });
+    }
+  }
+
+  Future getImageProfile(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker2.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _imageProfile = XFile(pickedFile.path); //가져온 이미지를 _imageProfile에 저장
+>>>>>>> c0c993bbb8ce6be1f8f55a4cfc0e67c88870685b
       });
     }
   }
@@ -114,19 +136,24 @@ class _ProfilePageState extends State<ProfilePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           buildTop(),
+          SizedBox(height: 20),
           buildCenter(),
           buildBottom(),
           SizedBox(height: 30),
           buildEditButton(),
+<<<<<<< HEAD
           _buildButtonBackground(),
           _buildButtonProfile(),
           _buildPhotoArea(),
 
+=======
+>>>>>>> c0c993bbb8ce6be1f8f55a4cfc0e67c88870685b
         ],
       ),
     );
   }
 
+<<<<<<< HEAD
 
   Widget _buildPhotoArea() {
     return background_image != null
@@ -139,6 +166,92 @@ class _ProfilePageState extends State<ProfilePage> {
       width: 300,
       height: 300,
       color: Colors.grey,
+    )
+  };
+
+  Widget buildImageButtonBack() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.grey,
+            child: Material(
+              shape: CircleBorder(),
+              clipBehavior: Clip.hardEdge,
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  getImageBack(
+                      ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
+                },
+                child: Center(
+                  child: Icon(Icons.camera_alt, size: 22, color: Colors.white),
+                ),
+              ),
+            )),
+        SizedBox(width: 6),
+        CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.grey,
+            child: Material(
+              shape: CircleBorder(),
+              clipBehavior: Clip.hardEdge,
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  getImageBack(
+                      ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+                },
+                child: Center(
+                  child: Icon(Icons.photo, size: 22, color: Colors.white),
+                ),
+              ),
+            )),
+      ],
+    );
+  }
+
+  Widget buildImageButtonProfile() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.white,
+            child: Material(
+              shape: CircleBorder(),
+              clipBehavior: Clip.hardEdge,
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  getImageProfile(
+                      ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
+                },
+                child: Center(
+                  child: Icon(Icons.camera_alt, size: 22, color: Colors.black),
+                ),
+              ),
+            )),
+        SizedBox(width: 6),
+        CircleAvatar(
+            radius: 15,
+            backgroundColor: Colors.white,
+            child: Material(
+              shape: CircleBorder(),
+              clipBehavior: Clip.hardEdge,
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  getImageProfile(
+                      ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+                },
+                child: Center(
+                  child: Icon(Icons.photo, size: 22, color: Colors.black),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
@@ -154,7 +267,9 @@ class _ProfilePageState extends State<ProfilePage> {
           margin: EdgeInsets.only(bottom: bottom),
           child: buildCoverImage(),
         ),
+        Positioned(bottom: bottom + 5, right: 5, child: buildImageButtonBack()),
         Positioned(top: top, child: buildProfileImage()),
+        Positioned(top: top + profileHeight, child: buildImageButtonProfile()),
       ],
     );
   }
@@ -205,12 +320,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildCoverImage() {
     return Container(
       color: Colors.grey,
-      child: Image.network(
-        "https://source.unsplash.com/random",
-        width: double.infinity,
-        height: coverHeight,
-        fit: BoxFit.cover,
-      ),
+      child: _imageBack != null
+          ? Image.file(File(_imageBack!.path),
+              width: double.infinity, height: coverHeight, fit: BoxFit.cover)
+          : Image.network(
+              "https://source.unsplash.com/random",
+              width: double.infinity,
+              height: coverHeight,
+              fit: BoxFit.cover,
+            ),
     );
   }
 
@@ -221,7 +339,9 @@ class _ProfilePageState extends State<ProfilePage> {
       child: CircleAvatar(
         radius: profileHeight / 2,
         backgroundColor: Colors.grey.shade800,
-        backgroundImage: NetworkImage("https://source.unsplash.com/random"),
+        backgroundImage: _imageProfile != null
+            ? FileImage(File(_imageProfile!.path)) as ImageProvider<Object>?
+            : NetworkImage("https://source.unsplash.com/random"),
       ),
     );
   }
@@ -372,7 +492,6 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black54,
@@ -389,36 +508,4 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
-// @override
-// Widget build(BuildContext context) {
-//   final imageSize = MediaQuery.of(context).size.width / 3;
-//
-//   return Scaffold(
-//     body: Column(
-//       children: [
-//         Container(
-//           constraints: BoxConstraints(
-//             minHeight: MediaQuery.of(context).size.width,
-//             minWidth: MediaQuery.of(context).size.width,
-//           ),
-//           child: Center(
-//             child: Column(
-//               children: [
-//                 Icon(
-//                   Icons.account_circle,
-//                   size: imageSize,
-//                 ),
-//                 Text('${userName}'),
-//                 Text('${userBirth}'),
-//                 Text('${userEmail}'),
-//                 // Text('${userPassword}'),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }
 }
