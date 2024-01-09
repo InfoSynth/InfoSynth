@@ -5,6 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:madcamp2/models/response_model.dart';
 import 'package:madcamp2/server/network.dart';
+const Color primaryColor = Color(0xFF007BFF);
+const Color backgroundColor = Colors.white;
+const TextStyle textStyle = TextStyle(color: Colors.black, fontSize: 20);
 
 class AIPage extends StatefulWidget {
   const AIPage({super.key});
@@ -38,29 +41,34 @@ class _AIPageState extends State<AIPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // 뉴스 리스트
           Expanded(
             child: ListView.separated(
-              padding: const EdgeInsets.all(8),
-              itemCount: newsList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 50,
-                  color: Colors.white,
-                  child: Center(child: Text('${newsList[index]['title']}')),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
+              // ... 기존의 코드 유지
+              itemBuilder: (context, index) => _buildListItem(index),
             ),
           ),
+          // 프롬프트 및 텍스트 필드
           Expanded(child: PromptBldr(responseTxt: responseTxt)),
           TextFormFieldBldr(
               promptController: promptController, btnFun: completionFun),
         ],
+      ),
+    );
+  }// 리스트 아이템 빌더
+  Widget _buildListItem(int index) {
+    return Container(
+      height: 50,
+      color: backgroundColor,
+      child: Center(
+        child: Text(
+          '${newsList[index]['title']}',
+          style: textStyle,
+        ),
       ),
     );
   }
