@@ -205,13 +205,13 @@ class _ProfilePageState extends State<ProfilePage> {
       alignment: Alignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: bottom),
+          margin: EdgeInsets.only(bottom: bottom + 15),
           child: buildCoverImage(),
         ),
-        Positioned(bottom: bottom + 5, right: 5, child: buildImageButtonBack()),
-        Positioned(top: top, child: buildProfileImage()),
         Positioned(
-            top: top + profileHeight - 10, child: buildImageButtonProfile()),
+            bottom: bottom + 20, right: 5, child: buildImageButtonBack()),
+        Positioned(top: top, child: buildProfileImage()),
+        Positioned(bottom: 0, child: buildImageButtonProfile()),
       ],
     );
   }
