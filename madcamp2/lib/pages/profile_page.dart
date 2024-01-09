@@ -1,11 +1,14 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:madcamp2/server/network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/user.dart';
 
 enum genderType { male, female }
 
@@ -23,6 +26,8 @@ class _ProfilePageState extends State<ProfilePage> {
   late String userEmail = '';
   late String userPassword = '';
 
+  Network network = Network();
+
   bool isAPIcallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
@@ -31,14 +36,34 @@ class _ProfilePageState extends State<ProfilePage> {
   final double coverHeight = 280;
   final double profileHeight = 144;
 
-  XFile? _image; //이미지를 담을 변수 선언
+  XFile? background_image; //이미지를 담을 변수 선언
+  XFile? profile_image; //이미지를 담을 변수 선언
+
   final ImagePicker picker = ImagePicker(); //ImagePicker 초기화
 
-  Future getImage(ImageSource imageSource) async {
-    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+
+
+  Future getImageBackground(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker.pickImage(
+        source: imageSource,
+        imageQuality: 30,
+    );
     if (pickedFile != null) {
       setState(() {
-        _image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
+        background_image = pickedFile!; //가져온 이미지를 _image에 저장
+      });
+      var formData = await FormData.fromMap({'background_image': await MultipartFile.fromFile(pickedFile.path)});
+      await network.patchUserBackGroundImage(formData);
+    }
+  }
+  Future getImageProfile(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker.pickImage(
+      source: imageSource,
+      imageQuality: 30,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        profile_image = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
     }
   }
@@ -93,42 +118,22 @@ class _ProfilePageState extends State<ProfilePage> {
           buildBottom(),
           SizedBox(height: 30),
           buildEditButton(),
-          _buildButton(),
+          _buildButtonBackground(),
+          _buildButtonProfile(),
           _buildPhotoArea(),
+
         ],
       ),
     );
   }
 
 
-
-  Widget _buildButton() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            getImage(ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
-          },
-          child: Text("카메라"),
-        ),
-        SizedBox(width: 30),
-        ElevatedButton(
-          onPressed: () {
-            getImage(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
-          },
-          child: Text("갤러리"),
-        ),
-      ],
-    );
-  }
-
   Widget _buildPhotoArea() {
-    return _image != null
+    return background_image != null
         ? Container(
-      width: 300,
-      height: 300,
-      child: Image.file(File(_image!.path)), //가져온 이미지를 화면에 띄워주는 코드
+      width: 30,
+      height: 30,
+      child: Image.file(File(background_image!.path)), //가져온 이미지를 화면에 띄워주는 코드
     )
         : Container(
       width: 300,
@@ -150,6 +155,49 @@ class _ProfilePageState extends State<ProfilePage> {
           child: buildCoverImage(),
         ),
         Positioned(top: top, child: buildProfileImage()),
+      ],
+    );
+  }
+
+
+  Widget _buildButtonBackground() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+
+          onPressed: () {
+            getImageBackground(ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
+          },
+          child: Text("카메라"),
+        ),
+        SizedBox( width: 30 ),
+        ElevatedButton(
+          onPressed: () {
+            getImageBackground(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+          },
+          child: Text("갤러리"),
+        ),
+      ],
+    );
+  }
+  Widget _buildButtonProfile() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            getImageProfile(ImageSource.camera); //getImage 함수를 호출해서 카메라로 찍은 사진 가져오기
+          },
+          child: Text("카메라"),
+        ),
+        SizedBox(width: 30),
+        ElevatedButton(
+          onPressed: () {
+            getImageProfile(ImageSource.gallery); //getImage 함수를 호출해서 갤러리에서 사진 가져오기
+          },
+          child: Text("갤러리"),
+        ),
       ],
     );
   }
