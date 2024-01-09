@@ -22,12 +22,14 @@ const {
   updateUserProfile,
   updateUserBackground,
   getNews,
+  getNewsSearch,
 } = require("./user_controller");
 
 const router = require("express").Router();
 
 const { checkToken } = require("../../auth/token_validation");
 
+router.post("/news/search", getNewsSearch);
 router.get("/news", getNews);
 router.post("/", createUser);
 router.get("/", checkToken, getUsers);
