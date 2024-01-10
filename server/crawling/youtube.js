@@ -15,13 +15,15 @@ const getYoutubeVideoTitle = async (videoLink) => {
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
-
+    console.log("puppeteer.launch started");
     const page = await browser.newPage();
-
-    await page.setDefaultNavigationTimeout(8000);
+    console.log("newPage started");
+    // await page.setDefaultNavigationTimeout(8000);
+    page.setDefaultNavigationTimeout(0);
+    console.log("setDefaultNavigationTimeout started");
     // await page.goto(videoLink, { waitUntil: "networkidle0" });
     await page.goto(videoLink, { waitUntil: "load", timeout: 0 });
-
+    console.log("goto started");
     try {
       await page.waitForSelector("#attributed-snippet-text");
       // Additional actions if the selector is found
