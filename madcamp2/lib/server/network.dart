@@ -156,6 +156,25 @@ class Network {
     }
   }
 
+  // youtube url 보내기
+  Future<Map> sendUrl(String url) async {
+    var url = Uri.parse(baseUrl + '/youtube');
+
+    try {
+      final response = await post(
+        url,
+        body: jsonEncode({"url": url}),
+        headers: {"Content-Type": "application/json"},
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
+
   // keyword string 3개 보내기
   Future<Map> sendKeyword(List<String> words) async {
     var url = Uri.parse(baseUrl + '/news/search');
