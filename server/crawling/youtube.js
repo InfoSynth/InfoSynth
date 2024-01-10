@@ -17,7 +17,8 @@ const getYoutubeVideoTitle = async (videoLink) => {
     });
 
     const page = await browser.newPage();
-    await page.setDefaultNavigationTimeout(60000);
+
+    await page.setDefaultNavigationTimeout(8000);
     await page.goto(videoLink, { waitUntil: "networkidle2" });
     try {
       await page.waitForSelector("#attributed-snippet-text");
