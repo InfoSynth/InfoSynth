@@ -20,9 +20,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
 
     await page.setDefaultNavigationTimeout(8000);
     // await page.goto(videoLink, { waitUntil: "networkidle0" });
-
-    await page.goto(videoLink);
-    await page.reload({ waitUntil: "networkidle2" });
+    await page.goto(videoLink, { waitUntil: "load", timeout: 0 });
 
     try {
       await page.waitForSelector("#attributed-snippet-text");
