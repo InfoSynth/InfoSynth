@@ -7,6 +7,7 @@ const {
 } = require("./user_service.js");
 const { getNewsHtml } = require("../../crawling/news.js");
 const { getSearchHtml } = require("../../crawling/search.js");
+const { getYoutubeVideoTitle } = require("../../crawling/youtube.js");
 
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
@@ -164,6 +165,15 @@ module.exports = {
   getNewsSearch: async (req, res) => {
     console.log("controller started");
     var art = await getSearchHtml(req.body.keyword);
+    console.log("Articles:", art);
+    return res.json({
+      success: 1,
+      data: art,
+    });
+  },
+  getYoutubeSearch: async (req, res) => {
+    console.log("controller started");
+    var art = await getYoutubeVideoTitle(req.body.url);
     console.log("Articles:", art);
     return res.json({
       success: 1,

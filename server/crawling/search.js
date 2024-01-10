@@ -38,6 +38,6 @@ const getSearchHtml = async (key) => {
   }
 };
 
-getSearchHtml("카이스트");
+// getSearchHtml("카이스트");
 
 module.exports = { getSearchHtml };

@@ -23,12 +23,14 @@ const {
   updateUserBackground,
   getNews,
   getNewsSearch,
+  getYoutubeSearch,
 } = require("./user_controller");
 
 const router = require("express").Router();
 
 const { checkToken } = require("../../auth/token_validation");
 
+router.post("/youtube", getYoutubeSearch);
 router.post("/news/search", getNewsSearch);
 router.get("/news", getNews);
 router.post("/", createUser);
