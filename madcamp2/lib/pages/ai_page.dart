@@ -199,8 +199,9 @@ class _AIPageState extends State<AIPage> {
       });
     }
 
-    List<String> words = responseTxt.split(',');
-    var news = await network.sendKeyword(words);
+    String responseTxtWithoutSpaces = responseTxt.replaceAll(' ', '');
+    responseTxtWithoutSpaces = responseTxtWithoutSpaces.replaceAll('\n', '');
+    var news = await network.sendKeyword(responseTxtWithoutSpaces);
     setState(() {
       newsList = news['data'];
     });

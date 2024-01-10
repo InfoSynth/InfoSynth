@@ -176,15 +176,13 @@ class Network {
   }
 
   // keyword string 3개 보내기
-  Future<Map> sendKeyword(List<String> words) async {
+  Future<Map> sendKeyword(String words) async {
     var url = Uri.parse(baseUrl + '/news/search');
-
-    String jsonString = words.join(' ');
 
     try {
       final response = await post(
         url,
-        body: jsonEncode({"keyword": jsonString}),
+        body: jsonEncode({"keyword": words}),
         headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;
