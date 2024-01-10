@@ -43,8 +43,8 @@ class _TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
                 text: 'home',
               ),
               Tab(
-                icon: Icon(Icons.chat),
-                text: 'chat',
+                icon: Icon(Icons.search),
+                text: 'search',
               ),
               Tab(
                 icon: Icon(Icons.people),

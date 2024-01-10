@@ -9,6 +9,8 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../utils/user.dart';
+
 late Map<String, dynamic> responseBody = {};
 String responseTxt = ''; // updated with the data which we get from the ai model
 
@@ -23,14 +25,13 @@ class AIPage extends StatefulWidget {
   }
 }
 
-List<dynamic> newsList = [];
-
 class _AIPageState extends State<AIPage> {
   late final TextEditingController promptController = TextEditingController();
 
   late ResponseModel _responseModel;
-  String url = '';
+  List<dynamic> newsList = [];
   String script = '';
+  String url = '';
   bool isAPIcallProcess = false;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
 
@@ -39,6 +40,19 @@ class _AIPageState extends State<AIPage> {
   @override
   void initState() {
     super.initState();
+    dddd();
+  }
+
+  void dddd() async {
+    var uurl = User.current.url;
+    setState(() {
+      url = uurl;
+    });
+    var scriptMap = await network.sendUrl(url);
+    setState(() {
+      script = scriptMap['data'];
+    });
+    await completionFun();
   }
 
   @override

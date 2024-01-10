@@ -1,11 +1,16 @@
-
 class User {
   String id;
   String email;
   String name;
   String token;
+  String url;
 
-  User({required this.id, required this.email, required this.name, required this.token});
+  User(
+      {required this.id,
+      required this.email,
+      required this.name,
+      required this.token,
+      required this.url});
 
   // User 클래스의 싱글턴 인스턴스
   static User? _instance;
@@ -17,6 +22,7 @@ class User {
       email: json['email'] as String,
       name: json['name'] as String,
       token: json['jwt'] as String,
+      url: "",
     );
   }
 
@@ -28,9 +34,8 @@ class User {
 
   // 인스턴스 초기화
   static void initialize(String id, String email, String name, String token) {
-    _instance = User(id: id, email: email, name: name, token: token);
+    _instance = User(id: id, email: email, name: name, token: token, url: "");
   }
-
 
   // 인스턴스 정보 업데이트
   static void update(String id, String email, String name, String token) {
@@ -45,5 +50,9 @@ class User {
   // 로그아웃 시 인스턴스 제거
   static void logout() {
     _instance = null;
+  }
+
+  static void setUrl(String url) {
+    _instance!.url = url;
   }
 }

@@ -107,6 +107,15 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -358,11 +367,14 @@ class _ProfilePageState extends State<ProfilePage> {
         threeStrings.length > 0
             ? Row(
                 children: [
-                  buildHashTagItem(threeStrings[0]),
+                  if (threeStrings.length > 0)
+                    buildHashTagItem(threeStrings[0]),
                   const SizedBox(width: 8),
-                  buildHashTagItem(threeStrings[1]),
+                  if (threeStrings.length > 1)
+                    buildHashTagItem(threeStrings[1]),
                   const SizedBox(width: 8),
-                  buildHashTagItem(threeStrings[2]),
+                  if (threeStrings.length > 2)
+                    buildHashTagItem(threeStrings[2]),
                 ],
               )
             : Text(
@@ -390,24 +402,24 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildhashTagPlusButton() {
-    return Container(
-      width: 32,
-      height: 32,
-      padding: EdgeInsets.all(0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Colors.grey.shade200,
-      ),
-      child: Center(
-        child: IconButton(
-          padding: EdgeInsets.zero,
-          icon: Icon(Icons.add),
-          onPressed: () {},
-        ),
-      ),
-    );
-  }
+  // Widget buildhashTagPlusButton() {
+  //   return Container(
+  //     width: 32,
+  //     height: 32,
+  //     padding: EdgeInsets.all(0),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(10),
+  //       color: Colors.grey.shade200,
+  //     ),
+  //     child: Center(
+  //       child: IconButton(
+  //         padding: EdgeInsets.zero,
+  //         icon: Icon(Icons.add),
+  //         onPressed: () {},
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget buildEditButton() {
     return Container(

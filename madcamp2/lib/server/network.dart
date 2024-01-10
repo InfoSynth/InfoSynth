@@ -156,6 +156,22 @@ class Network {
     }
   }
 
+  Future<Map> getAllYoutube() async {
+    var url = Uri.parse(baseUrl + '/youtube');
+    try {
+      final response = await get(
+        url,
+        headers: {"Content-Type": "application/json"},
+      );
+      var userJson = response.body;
+      var parsingData = jsonDecode(userJson);
+      return parsingData;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
+
   // youtube url 보내기
   Future<Map> sendUrl(String youtubeUrl) async {
     var url = Uri.parse(baseUrl + '/youtube');
