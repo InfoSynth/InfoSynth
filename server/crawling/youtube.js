@@ -1,10 +1,9 @@
 const puppeteer = require("puppeteer-extra");
-const awsPlugin = require("puppeteer-extra-plugin-aws");
+const StealthPlugin = require("puppeteer-extra-plugin-aws");
 
 var { executablePath } = require("../.private");
 
-// puppeteer.use(StealthPlugin());
-// puppeteer.use(awsPlugin());
+puppeteer.use(StealthPlugin());
 
 // const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
 
@@ -14,16 +13,17 @@ const getYoutubeVideoTitle = async (videoLink) => {
     const browser = await puppeteer.launch({
       executablePath: executablePath, // Chrome 실행 경로
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox", '--single-process'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     console.log("puppeteer.launch started");
     const page = await browser.newPage();
     console.log("newPage started");
-    
+    // await page.setDefaultNavigationTimeout(8000);
+    // page.setDefaultNavigationTimeout(0);
     page.setDefaultNavigationTimeout(30000);
     console.log("setDefaultNavigationTimeout started");
+    // await page.goto(videoLink, { waitUntil: "networkidle2" });
     await page.setJavaScriptEnabled(true);
-
     try {
       await page.goto(videoLink, { waitUntil: "networkidle2" });ㅔ
     } catch (navigationError) {
