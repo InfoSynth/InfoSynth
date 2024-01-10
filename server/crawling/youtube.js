@@ -1,9 +1,10 @@
 const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const awsPlugin = require("puppeteer-extra-plugin-aws");
 
 var { executablePath } = require("../.private");
 
-puppeteer.use(StealthPlugin());
+// puppeteer.use(StealthPlugin());
+puppeteer.use(awsPlugin());
 
 // const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
 
@@ -25,7 +26,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
     // await page.goto(videoLink, { waitUntil: "networkidle2" });
     await page.setJavaScriptEnabled(true);
     try {
-      await page.goto(videoLink, { waitUntil: "networkidle2" });
+      await page.goto(videoLink, { waitUntil: "networkidle2" });ㅔ
     } catch (navigationError) {
       console.error("Navigation error:", navigationError);
       await browser.close();
