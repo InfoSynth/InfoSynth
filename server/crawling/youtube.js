@@ -5,7 +5,7 @@ var { executablePath } = require("../.private");
 
 puppeteer.use(StealthPlugin());
 
-const videoLink = "https://www.youtube.com/watch?v=7o-CzVusWBk"; // 동영상 페이지 링크
+const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
 
 const getYoutubeVideoTitle = async (videoLink) => {
   const browser = await puppeteer.launch({
@@ -28,9 +28,9 @@ const getYoutubeVideoTitle = async (videoLink) => {
   const expandSelector = "#expand";
   try {
     await page.waitForSelector(expandSelector);
-    // console.log("Button found, attempting to click...");
+    console.log("Button found, attempting to click...");
     await page.click(expandSelector);
-    // console.log("Button clicked successfully.");
+    console.log("Button clicked successfully.");
     await page.waitForSelector(
       "#description-inline-expander > yt-attributed-string > span > span:nth-child(4)"
     ); // 해당 요소가 로드될 때까지 기다립니다.
@@ -39,7 +39,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
         "#primary-button > ytd-button-renderer > yt-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill"
       );
     } catch (error) {
-      // console.error("스크립트 클릭버튼이 없어요");
+      console.error("스크립트 클릭버튼이 없어요");
       var articles = "";
       for (var i = 1; i < 100; i++) {
         const strg =
@@ -61,7 +61,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
     await page.waitForSelector(
       "#segments-container > ytd-transcript-segment-renderer:nth-child(19) > div > yt-formatted-string"
     );
-    // console.log("Finished Waiting");
+    console.log("Finished Waiting");
   } catch (error) {
     console.error("Error in clicking the button:", error);
     await browser.close();
@@ -77,7 +77,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
       const titleElement = document.querySelector(strg);
       return titleElement ? titleElement.innerText : null;
     }, strg);
-    // console.log(i, ": ", title);
+    console.log(i, ": ", title);
     if (title != null) articles += title;
   }
   // const title = await page.evaluate(() => {
@@ -93,4 +93,4 @@ const getYoutubeVideoTitle = async (videoLink) => {
 
 module.exports = { getYoutubeVideoTitle };
 
-// getYoutubeVideoTitle(videoLink).then((title) => console.log("Content:", title));
+getYoutubeVideoTitle(videoLink).then((title) => console.log("Content:", title));
