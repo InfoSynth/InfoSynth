@@ -10,7 +10,7 @@ const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 �
 const getYoutubeVideoTitle = async (videoLink) => {
   const browser = await puppeteer.launch({
     executablePath: executablePath, // Chrome 실행 경로
-    headless: false,
+    headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
@@ -35,11 +35,16 @@ const getYoutubeVideoTitle = async (videoLink) => {
       "#description-inline-expander > yt-attributed-string > span > span:nth-child(4)"
     ); // 해당 요소가 로드될 때까지 기다립니다.
     try {
-      await page.click(
-        "#primary-button > ytd-button-renderer > yt-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill"
-      );
+      // await page.click(
+      //   "#primary-button > ytd-button-renderer > yt-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill"
+      // );
+      await page.evaluate((selector) => {
+        document.querySelector(selector).click();
+      }, "#primary-button > ytd-button-renderer > yt-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill");
     } catch (error) {
       console.error("스크립트 클릭버튼이 없어요");
+      console.error(error);
+
       var articles = "";
       for (var i = 1; i < 100; i++) {
         const strg =
