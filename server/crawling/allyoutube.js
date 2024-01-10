@@ -39,6 +39,6 @@ const getALLYoutubeVideoTitle = async () => {
 
 module.exports = { getALLYoutubeVideoTitle };
 
-getALLYoutubeVideoTitle(videoLink).then((title) =>
-  console.log("Content:", title)
-);
+// getALLYoutubeVideoTitle(videoLink).then((title) =>
+//   console.log("Content:", title)
+// );
