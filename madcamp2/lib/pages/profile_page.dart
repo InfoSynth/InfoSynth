@@ -45,7 +45,10 @@ class _ProfilePageState extends State<ProfilePage> {
         _imageBack = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
       var formData = FormData.fromMap(
-          {'image': await MultipartFile.fromFile(pickedFile.path)});
+          {
+            'image': await MultipartFile.fromFile(pickedFile.path),
+            'email': userEmail
+          });
       network.patchUserBackGroundImage(formData);
     }
   }
@@ -79,6 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     DateTime date = DateTime.parse(checked_data['birth']);
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
 
     setState(() {
       userName = checked_data['name'];

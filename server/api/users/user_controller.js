@@ -4,6 +4,8 @@ const {
   getUsers,
   updateUser,
   getUserByUserEmail,
+  setBackUrl,
+  setProfileUrl,
 } = require("./user_service.js");
 const { getNewsHtml } = require("../../crawling/news.js");
 const { getSearchHtml } = require("../../crawling/search.js");
@@ -134,18 +136,43 @@ module.exports = {
       }
     });
   },
-  updateUserBackground: (req, res) => {
-    // const image_data = req.body.data;
+  updateUserBackground: async (req, res) => {
     console.log("controller");
-    // upload.single("image"),
-      res.json({
+    const email = req.body.email;
+    const url = req.file.fieldname + "-" + Date.now() + ".jpeg";
+    const n = [email, url];
+    // console.log(n[0]);
+    // console.log(n[1]);
+
+    setBackUrl(n, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
         success: 1,
         message: "updated successfully",
       });
+    });
   },
-  updateUserProfile: (req, res) => {
-    // const image_data = req.body.data;
-    // console.log(image_data);
+  updateUserProfile: async (req, res) => {
+    console.log("controller");
+    const email = req.body.email;
+    const url = req.file.fieldname + "-" + Date.now() + ".jpeg";
+    const n = [email, url];
+    // console.log(n[0]);
+    // console.log(n[1]);
+
+    setProfileUrl(n, (err, results) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      return res.json({
+        success: 1,
+        message: "updated successfully",
+      });
+    });
   },
   getNews: async (req, res) => {
     var art = await getNewsHtml();
@@ -157,7 +184,7 @@ module.exports = {
   },
   getNews: async (req, res) => {
     var art = await getNewsHtml();
-    console.log("Articles:", art);
+    // console.log("Articles:", art);
     return res.json({
       success: 1,
       data: art,
@@ -166,7 +193,7 @@ module.exports = {
   getNewsSearch: async (req, res) => {
     console.log("controller started");
     var art = await getSearchHtml(req.body.keyword);
-    console.log("Articles:", art);
+    // console.log("Articles:", art);
     return res.json({
       success: 1,
       data: art,
@@ -174,9 +201,9 @@ module.exports = {
   },
   getYoutubeSearch: async (req, res) => {
     console.log("controller started");
-    console.log("req.body.url: " , req.body)
+    console.log("req.body.url: ", req.body);
     var art = await getYoutubeVideoTitle(req.body.url);
-    console.log("Articles:", art);
+    // console.log("Articles:", art);
     return res.json({
       success: 1,
       data: art,
@@ -185,7 +212,7 @@ module.exports = {
   getALLYoutube: async (req, res) => {
     console.log("controller started");
     var art = await getALLYoutubeVideoTitle();
-    console.log("Articles:", art);
+    // console.log("Articles:", art);
     return res.json({
       success: 1,
       data: art,
