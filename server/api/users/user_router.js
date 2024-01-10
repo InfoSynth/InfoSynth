@@ -47,6 +47,11 @@ router.patch(
   upload.single("image"),
   updateUserBackground
 );
-router.patch("/users/profileimage", checkToken, updateUserProfile);
+router.patch(
+  "/users/profileimage",
+  checkToken,
+  upload.single("image"),
+  updateUserProfile
+);
 
 module.exports = router;

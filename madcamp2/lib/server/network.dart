@@ -6,9 +6,9 @@ import 'package:http/http.dart';
 import '../utils/user.dart';
 
 class Network {
-  final baseUrl = "http://3.37.132.122:8000/api/users";
+  // final baseUrl = "http://3.37.132.122:8000/api/users";
 
-  // final baseUrl = "http://localhost:8000/api/users";
+  final baseUrl = "http://localhost:8000/api/users";
 
   // 전체 멤버 탐색
   Future<dynamic> allMember() async {
