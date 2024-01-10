@@ -22,7 +22,15 @@ const getYoutubeVideoTitle = async (videoLink) => {
     // page.setDefaultNavigationTimeout(0);
     page.setDefaultNavigationTimeout(30000);
     console.log("setDefaultNavigationTimeout started");
-    await page.goto(videoLink, { waitUntil: "networkidle2" });
+    // await page.goto(videoLink, { waitUntil: "networkidle2" });
+    await page.setJavaScriptEnabled(true);
+    try {
+      await page.goto(videoLink, { waitUntil: "networkidle2" });
+    } catch (navigationError) {
+      console.error("Navigation error:", navigationError);
+      await browser.close();
+      return "";
+    }
     // await page.goto(videoLink, { waitUntil: "load", timeout: 0 });
     console.log("goto started");
     try {
