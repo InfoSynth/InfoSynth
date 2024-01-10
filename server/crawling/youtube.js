@@ -8,7 +8,7 @@ puppeteer.use(StealthPlugin());
 const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
 
 const getYoutubeVideoTitle = async (videoLink) => {
-  console.log("youtube.js started");
+  console.log("youtube.js started: ", videoLink);
   try {
     const browser = await puppeteer.launch({
       executablePath: executablePath, // Chrome 실행 경로
@@ -97,7 +97,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
     await browser.close();
     return articles;
   } catch (error) {
-    print(error);
+    console.log(error);
     return "";
   }
 };
