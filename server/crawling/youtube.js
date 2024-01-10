@@ -13,13 +13,14 @@ const getYoutubeVideoTitle = async (videoLink) => {
     const browser = await puppeteer.launch({
       executablePath: executablePath, // Chrome 실행 경로
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox", '--single-process'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     console.log("puppeteer.launch started");
     const page = await browser.newPage();
     console.log("newPage started");
     // await page.setDefaultNavigationTimeout(8000);
-    page.setDefaultNavigationTimeout(0);
+    // page.setDefaultNavigationTimeout(0);
+    page.setDefaultNavigationTimeout(30000);
     console.log("setDefaultNavigationTimeout started");
     await page.goto(videoLink, { waitUntil: "networkidle2" });
     // await page.goto(videoLink, { waitUntil: "load", timeout: 0 });
