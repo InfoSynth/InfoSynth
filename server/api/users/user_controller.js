@@ -9,7 +9,7 @@ const { getNewsHtml } = require("../../crawling/news.js");
 const { getSearchHtml } = require("../../crawling/search.js");
 const { getYoutubeVideoTitle } = require("../../crawling/youtube.js");
 const { getALLYoutubeVideoTitle } = require("../../crawling/allyoutube.js");
-
+const { getYoutubeSearch } = require("../../crawling/youtube.js");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 
