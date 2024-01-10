@@ -12,7 +12,7 @@ const getYoutubeVideoTitle = async (videoLink) => {
   try {
     const browser = await puppeteer.launch({
       executablePath: executablePath, // Chrome 실행 경로
-      headless: true,
+      headless: false,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     console.log("puppeteer.launch started");
