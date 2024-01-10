@@ -3,7 +3,7 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 
 puppeteer.use(StealthPlugin());
 
-const videoLink = "https://www.youtube.com/watch?v=EE2puUfCdLQ"; // 동영상 페이지 링크
+const videoLink = "https://www.youtube.com/watch?v=7o-CzVusWBk"; // 동영상 페이지 링크
 
 const getYoutubeVideoTitle = async (videoLink) => {
   const browser = await puppeteer.launch({
@@ -16,8 +16,13 @@ const getYoutubeVideoTitle = async (videoLink) => {
   const page = await browser.newPage();
   await page.setDefaultNavigationTimeout(60000);
   await page.goto(videoLink, { waitUntil: "networkidle2" });
-
-  await page.waitForSelector("#attributed-snippet-text"); // 해당 요소가 로드될 때까지 기다립니다.
+  try {
+    await page.waitForSelector("#attributed-snippet-text");
+    // Additional actions if the selector is found
+  } catch (error) {
+    console.error("Error in finding the selector:", error);
+    return ""; // Return a blank string in case of an error
+  }
 
   const expandSelector = "#expand";
   try {
@@ -28,9 +33,29 @@ const getYoutubeVideoTitle = async (videoLink) => {
     await page.waitForSelector(
       "#description-inline-expander > yt-attributed-string > span > span:nth-child(4)"
     ); // 해당 요소가 로드될 때까지 기다립니다.
-    await page.click(
-      "#primary-button > ytd-button-renderer > yt-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill"
-    );
+    try {
+      await page.click(
+        "#primary-button > ytd-button-renderer > yt-button-shape > button > yt-touch-feedback-shape > div > div.yt-spec-touch-feedback-shape__fill"
+      );
+    } catch (error) {
+      // console.error("스크립트 클릭버튼이 없어요");
+      var articles = "";
+      for (var i = 1; i < 100; i++) {
+        const strg =
+          "#description-inline-expander > yt-attributed-string > span > span:nth-child(" +
+          i +
+          ")";
+        const title = await page.evaluate((strg) => {
+          const titleElement = document.querySelector(strg);
+          return titleElement ? titleElement.innerText : null;
+        }, strg);
+        // console.log(i, ": ", title);
+        if (title != null) articles += title;
+      }
+      await browser.close();
+      return articles;
+    }
+
     // console.log("Script clicked successfully.");
     await page.waitForSelector(
       "#segments-container > ytd-transcript-segment-renderer:nth-child(19) > div > yt-formatted-string"
@@ -38,8 +63,9 @@ const getYoutubeVideoTitle = async (videoLink) => {
     // console.log("Finished Waiting");
   } catch (error) {
     console.error("Error in clicking the button:", error);
+    await browser.close();
+    return "";
   }
-
   var articles = "";
   for (var i = 1; i < 100; i++) {
     const strg =
@@ -66,4 +92,4 @@ const getYoutubeVideoTitle = async (videoLink) => {
 
 module.exports = { getYoutubeVideoTitle };
 
-// getYoutubeVideoTitle(videoLink).then((title) => console.log("Content:", title));
+getYoutubeVideoTitle(videoLink).then((title) => console.log("Content:", title));
