@@ -1,11 +1,12 @@
 const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+const awsPlugin = require("puppeteer-extra-plugin-aws");
 
 var { executablePath } = require("../.private");
 
-puppeteer.use(StealthPlugin());
+// puppeteer.use(StealthPlugin());
+// puppeteer.use(awsPlugin());
 
-const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
+// const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
 
 const getYoutubeVideoTitle = async (videoLink) => {
   console.log("youtube.js started: ", videoLink);
@@ -18,11 +19,19 @@ const getYoutubeVideoTitle = async (videoLink) => {
     console.log("puppeteer.launch started");
     const page = await browser.newPage();
     console.log("newPage started");
-    // await page.setDefaultNavigationTimeout(8000);
-    page.setDefaultNavigationTimeout(0);
+    
+    page.setDefaultNavigationTimeout(30000);
     console.log("setDefaultNavigationTimeout started");
-    // await page.goto(videoLink, { waitUntil: "networkidle0" });
-    await page.goto(videoLink, { waitUntil: "load", timeout: 0 });
+    await page.setJavaScriptEnabled(true);
+
+    try {
+      await page.goto(videoLink, { waitUntil: "networkidle2" });ㅔ
+    } catch (navigationError) {
+      console.error("Navigation error:", navigationError);
+      await browser.close();
+      return "";
+    }
+    // await page.goto(videoLink, { waitUntil: "load", timeout: 0 });
     console.log("goto started");
     try {
       await page.waitForSelector("#attributed-snippet-text");
