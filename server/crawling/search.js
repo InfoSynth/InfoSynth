@@ -29,10 +29,10 @@ const getSearchHtml = async (key) => {
         articles.push({ title, link });
       }
     }
-    console.log(articles);
+    // console.log(articles);
     return articles;
   } catch (error) {
-    console.log(articles);
+    // console.log(articles);
     // console.error(error);
     return {};
   }

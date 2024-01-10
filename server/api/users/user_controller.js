@@ -149,7 +149,7 @@ module.exports = {
   },
   getNews: async (req, res) => {
     var art = await getNewsHtml();
-    console.log("Articles:", art);
+    // console.log("Articles:", art);
     return res.json({
       success: 1,
       data: art,

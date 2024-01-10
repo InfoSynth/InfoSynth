@@ -10,7 +10,7 @@ const videoLink = "https://www.youtube.com/"; // 동영상 페이지 링크
 const getALLYoutubeVideoTitle = async () => {
   const browser = await puppeteer.launch({
     executablePath: executablePath, // Chrome 실행 경로
-    headless: false,
+    headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
 
