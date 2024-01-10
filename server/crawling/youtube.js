@@ -5,7 +5,7 @@ var { executablePath } = require("../.private");
 
 puppeteer.use(StealthPlugin());
 
-const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
+// const videoLink = "https://www.youtube.com/watch?v=p3HQJRKAkZ8"; // 동영상 페이지 링크
 
 const getYoutubeVideoTitle = async (videoLink) => {
   console.log("youtube.js started: ", videoLink);

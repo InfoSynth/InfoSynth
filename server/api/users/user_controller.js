@@ -174,6 +174,7 @@ module.exports = {
   },
   getYoutubeSearch: async (req, res) => {
     console.log("controller started");
+    console.log("req.body.url: " , req.body.url)
     var art = await getYoutubeVideoTitle(req.body.url);
     console.log("Articles:", art);
     return res.json({
