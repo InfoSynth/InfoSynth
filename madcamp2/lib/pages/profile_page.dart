@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:madcamp2/pages/ai_page.dart';
 import 'package:madcamp2/server/network.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,17 +38,20 @@ class _ProfilePageState extends State<ProfilePage> {
   final ImagePicker picker2 = ImagePicker(); //ImagePicker 초기화
   Network network = Network();
 
+  AIPage ai = AIPage();
+  String responseTxt = '';
+  List<String> threeStrings = [];
+
   Future getImageBack(ImageSource imageSource) async {
     final XFile? pickedFile = await picker1.pickImage(source: imageSource);
     if (pickedFile != null) {
       setState(() {
         _imageBack = XFile(pickedFile.path); //가져온 이미지를 _image에 저장
       });
-      var formData = FormData.fromMap(
-          {
-            'image': await MultipartFile.fromFile(pickedFile.path),
-            'email': userEmail
-          });
+      var formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(pickedFile.path),
+        'email': userEmail
+      });
       network.patchUserBackGroundImage(formData);
     }
   }
@@ -82,7 +85,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
     DateTime date = DateTime.parse(checked_data['birth']);
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
-
 
     setState(() {
       userName = checked_data['name'];
@@ -284,18 +286,18 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 1.4,
             )),
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildSocialIcon(FontAwesomeIcons.instagram),
-            const SizedBox(width: 12),
-            buildSocialIcon(FontAwesomeIcons.threads),
-            const SizedBox(width: 12),
-            buildSocialIcon(FontAwesomeIcons.facebook),
-            const SizedBox(width: 12),
-            buildSocialIcon(FontAwesomeIcons.xTwitter),
-          ],
-        )
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     buildSocialIcon(FontAwesomeIcons.instagram),
+        //     const SizedBox(width: 12),
+        //     buildSocialIcon(FontAwesomeIcons.threads),
+        //     const SizedBox(width: 12),
+        //     buildSocialIcon(FontAwesomeIcons.facebook),
+        //     const SizedBox(width: 12),
+        //     buildSocialIcon(FontAwesomeIcons.xTwitter),
+        //   ],
+        // )
       ],
     );
   }
@@ -330,31 +332,45 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildHashTag() {
+    setState(() {
+      responseTxt = ai.getresponse();
+      String responseTxtWithoutSpaces = responseTxt.replaceAll(' ', '');
+      responseTxtWithoutSpaces = responseTxtWithoutSpaces.replaceAll('\n', '');
+      threeStrings = responseTxtWithoutSpaces.split(',');
+    });
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
         Row(
           children: [
-            Text('Interest',
+            Text('최근 관심사',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 )),
             SizedBox(width: 10),
-            buildhashTagPlusButton(),
+            // buildhashTagPlusButton(),
           ],
         ),
         const SizedBox(height: 13),
-        Row(
-          children: [
-            buildHashTagItem('음악'),
-            const SizedBox(width: 8),
-            buildHashTagItem('주식'),
-            const SizedBox(width: 8),
-            buildHashTagItem('고양이'),
-          ],
-        ),
+        threeStrings.length > 0
+            ? Row(
+                children: [
+                  buildHashTagItem(threeStrings[0]),
+                  const SizedBox(width: 8),
+                  buildHashTagItem(threeStrings[1]),
+                  const SizedBox(width: 8),
+                  buildHashTagItem(threeStrings[2]),
+                ],
+              )
+            : Text(
+                '최근 관심사가 없습니다.',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              )
       ],
     );
   }

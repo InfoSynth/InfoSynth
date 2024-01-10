@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer-extra");
-const StealthPlugin = require("puppeteer-extra-plugin-aws");
+const StealthPlugin = require("puppeteer-extra-plugin");
 
 var { executablePath } = require("../.private");
 

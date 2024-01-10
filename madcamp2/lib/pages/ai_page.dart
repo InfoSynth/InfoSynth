@@ -9,19 +9,25 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+late Map<String, dynamic> responseBody = {};
+String responseTxt = ''; // updated with the data which we get from the ai model
+
 class AIPage extends StatefulWidget {
   const AIPage({super.key});
 
   @override
   State<AIPage> createState() => _AIPageState();
+
+  String getresponse() {
+    return responseTxt;
+  }
 }
 
 List<dynamic> newsList = [];
 
 class _AIPageState extends State<AIPage> {
   late final TextEditingController promptController = TextEditingController();
-  String responseTxt =
-      ''; // updated with the data which we get from the ai model
+
   late ResponseModel _responseModel;
   String url = '';
   String script = '';
@@ -110,6 +116,7 @@ class _AIPageState extends State<AIPage> {
                         setState(() {
                           script = scriptMap['data'];
                         });
+                        completionFun();
                       }
                     },
                     btnColor: Colors.white,
@@ -156,7 +163,7 @@ class _AIPageState extends State<AIPage> {
                 const Divider(),
           ),
         ),
-        Expanded(child: PromptBldr(responseTxt: responseTxt)),
+        // Expanded(child: PromptBldr(responseTxt: responseTxt)),
       ],
     );
   }
@@ -179,10 +186,11 @@ class _AIPageState extends State<AIPage> {
             })));
 
     try {
-      final Map<String, dynamic> responseBody = jsonDecode(response.body);
+      responseBody = jsonDecode(response.body);
       _responseModel = ResponseModel.fromMap(responseBody);
       setState(() {
         responseTxt = utf8.decode(responseBody['choices'][0]['text'].codeUnits);
+        print('responseTxt: ' + responseTxt);
       });
     } catch (e) {
       print('Error decoding JSON: $e');
