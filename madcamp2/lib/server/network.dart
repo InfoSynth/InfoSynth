@@ -157,13 +157,13 @@ class Network {
   }
 
   // youtube url 보내기
-  Future<Map> sendUrl(String url) async {
+  Future<Map> sendUrl(String youtubeUrl) async {
     var url = Uri.parse(baseUrl + '/youtube');
 
     try {
       final response = await post(
         url,
-        body: jsonEncode({"url": url}),
+        body: jsonEncode({"url": youtubeUrl}),
         headers: {"Content-Type": "application/json"},
       );
       var userJson = response.body;
