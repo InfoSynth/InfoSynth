@@ -137,7 +137,7 @@ module.exports = {
   updateUserBackground: (req, res) => {
     // const image_data = req.body.data;
     console.log("controller");
-    upload.single("image"),
+    // upload.single("image"),
       res.json({
         success: 1,
         message: "updated successfully",
