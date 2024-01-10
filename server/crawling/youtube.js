@@ -1,14 +1,15 @@
 const puppeteer = require("puppeteer-extra");
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 
+var { executablePath } = require("../.private");
+
 puppeteer.use(StealthPlugin());
 
 const videoLink = "https://www.youtube.com/watch?v=7o-CzVusWBk"; // 동영상 페이지 링크
 
 const getYoutubeVideoTitle = async (videoLink) => {
   const browser = await puppeteer.launch({
-    executablePath:
-      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", // Chrome 실행 경로
+    executablePath: executablePath, // Chrome 실행 경로
     headless: false,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   });
@@ -92,4 +93,4 @@ const getYoutubeVideoTitle = async (videoLink) => {
 
 module.exports = { getYoutubeVideoTitle };
 
-getYoutubeVideoTitle(videoLink).then((title) => console.log("Content:", title));
+// getYoutubeVideoTitle(videoLink).then((title) => console.log("Content:", title));
