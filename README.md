@@ -1,7 +1,7 @@
 # 3M_Mad_Memoir_Mix
-*2023 Winter MadCamp First Project*
+*2023 Winter MadCamp Second Project*
 
-
+<!--
 
 ## Outline
 <img src="https://github.com/najiyeon/3M_Mad_Memoir_Mix/assets/113894257/f79ea7fd-abf9-46e6-ad58-fe4bbaec736f" width="200"></img>  <img src="https://github.com/najiyeon/3M_Mad_Memoir_Mix/assets/113894257/24dcd24f-669b-4eca-9e6b-1285874f04de" width="350"></img>
@@ -79,3 +79,5 @@ https://github.com/najiyeon/3M_Mad_Memoir_Mix/assets/113894257/f6c62bd2-df7a-4aa
 **apk link**
 
 https://drive.google.com/file/d/1VQluddBxFkkSFkzc6wl1XXZtUNBA70rh/view?usp=sharing
+
+-->
