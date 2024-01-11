@@ -1,4 +1,4 @@
-# 3M_Mad_Memoir_Mix
+# InfoSynth
 *2023 Winter MadCamp Second Project*
 
 <!--
