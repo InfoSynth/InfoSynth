@@ -11,9 +11,9 @@
 <br/>
 
 ## Team
-**나지연**  <a href="https://github.com/najiyeon" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"></a>
-
 **강승완** <a href="https://github.com/albertruaz" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"></a>
+
+**나지연**  <a href="https://github.com/najiyeon" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white"></a>
 
 <br/>
 
